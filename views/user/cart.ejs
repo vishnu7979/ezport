@@ -1,0 +1,273 @@
+
+
+<style>
+    .icon-hover-primary:hover {
+  border-color: #3b71ca !important;
+  background-color: white !important;
+}
+
+.icon-hover-primary:hover i {
+  color: #3b71ca !important;
+}
+.icon-hover-danger:hover {
+  border-color: #dc4c64 !important;
+  background-color: white !important;
+}
+
+.icon-hover-danger:hover i {
+  color: #dc4c64 !important;
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<%- include("../partials/header.ejs") %>
+
+  <!-- cart + summary -->
+  <section class="bg-light my-5">
+    <div class="container">
+      <div class="row">
+        <!-- cart -->
+        <div class="col-lg-9">
+          <div class="card border shadow-0" >
+            <div class="m-4" >
+              <h4 class="card-title mb-4">Your shopping cart</h4>
+               
+              <% if (cartItems.length > 0) { %>
+                <% cartItems.forEach(item => { %>
+              <div class="row gy-3">
+                <div class="col-lg-5">
+                  <div class="me-lg-5">
+                    <div class="d-flex">
+                      <img src="/uploads/<%= item.image %>" alt="<%= item.name %>" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                      <div class="">
+                        <h4><%= item.name %></h4>
+                        <!-- <a href="#" class="nav-link">Blazer Suit Dress Jacket for Men</a> -->
+                        <p>Description: <%= item.description %></p>
+                        <p>Price: <%= item.price %></p>
+
+                      </div>
+                    </div>    
+                  </div>
+                </div>
+                <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+
+                  <div class="col-md-4 col-6 mb-3">
+                    <label class="mb-2 d-block">Quantity</label>
+                    <div class="input-group mb-3" style="width: 170px;">
+                      <button class="btn btn-white border border-secondary px-3 decreaseQuantity" type="button" data-mdb-ripple-color="dark">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="text" class="form-control text-center border border-secondary" value="<%= item.quantity %>" aria-label="Example text with button addon" aria-describedby="button-addon1" data-item-id="<%= item._id %>" />
+                      <button class="btn btn-white border border-secondary px-3 increaseQuantity" type="button" data-mdb-ripple-color="dark">
+                        <i class="fas fa-plus"></i>
+                      </button> 
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                  <div class="float-md-end">
+                     
+                    <!-- <a href="#" class="btn btn-light border text-danger icon-hover-danger"> Remove</a> -->
+                    <form action="/cart/remove/<%= item._id %>" method="POST">
+                        <button class="btn btn-light border text-danger icon-hover-danger" type="submit"> Remove Item </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <% }); %>
+        <% } else { %>
+            <div class="empty-cart">
+                <p>Your cart is empty.</p>
+            </div>
+        <% } %>
+
+ 
+            </div>
+  
+            <div class="border-top pt-4 mx-4 mb-4">
+              <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
+              <p class="text-muted">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- cart -->
+        <!-- summary -->
+        <div class="col-lg-3">
+           
+          <div class="card shadow-0 border">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <p class="mb-2">Total price:</p>
+                <p id="totalPriceValue" class="mb-2"><%= totalPrice %></p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="mb-2">Discount:</p>
+                <p class="mb-2 text-success">-$00.00</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="mb-2">TAX:</p>
+                <p class="mb-2">$00.00</p>
+              </div>
+              <hr />
+              <div class="d-flex justify-content-between">
+                <p class="mb-2">Total price:</p>
+                <p class="mb-2 fw-bold" id="totalPriceValue2"><%= totalPrice %></p>
+              </div>
+  
+              <div class="mt-3">
+                 
+                <a class="btn btn-success w-100 shadow-0 mb-2" href="/orderConfirmAll">Proceed to payment</a>
+                
+                
+                
+                 
+                <a class="btn btn-danger w-100 shadow-0 mb-2" href="/user/products" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- summary -->
+      </div>
+    </div>
+  </section>
+  <!-- cart + summary -->
+  <section>
+    <div class="container my-5">
+      <header class="mb-4">
+        <h3>Recommended items</h3>
+      </header>
+  
+      <div class="row">
+
+
+        <% product.slice(0, 4).forEach(product => { %>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="card px-4 border shadow-0 mb-4 mb-lg-0">
+            <div class="mask px-2" style="height: 50px;">
+              <div class="d-flex justify-content-between">
+                <h6><span class="badge bg-danger pt-1 mt-3 ms-2">New</span></h6>
+               </div>
+            </div>
+            <a href="/product/<%= product._id %>"> <img src="/uploads/<%= product.image %>" alt="<%= product.name %>" class="card-img-top" /></a>
+
+            <div class="card-body d-flex flex-column pt-3 border-top">
+              <a href="#" class="nav-link"><%= product.name %></a>
+              <div class="price-wrap mb-2">
+                <strong class="">$<%= product.price %></strong>
+                <del class="">$<%= product.price %></del>
+              </div>
+              <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                <form action="/addtocart" method="post">
+                  <input type="hidden" name="productId" value="<%= product._id %>">
+                  <button type="submit" class="btn btn-primary shadow-0">Add to Cart <i class="me-1 fa fa-shopping-basket"></i></button>
+                </form>
+                </div>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+        
+      </div>
+    </div>
+  </section>
+  <!-- Recommended -->
+
+  <script>
+    $(document).ready(function() {
+      $(".increaseQuantity").on("click", function() {
+        const itemInput = $(this).closest(".input-group").find(".form-control");
+        const currentQuantity = parseInt(itemInput.val());
+        const newQuantity = currentQuantity + 1;
+        updateQuantity(itemInput, newQuantity);
+      });
+    
+      $(".decreaseQuantity").on("click", function() {
+        const itemInput = $(this).closest(".input-group").find(".form-control");
+        const currentQuantity = parseInt(itemInput.val());
+    
+        // Check if the current quantity is greater than 1 before decreasing
+        if (currentQuantity > 1) {
+          const newQuantity = currentQuantity - 1;
+          updateQuantity(itemInput, newQuantity);
+        }
+      });
+    
+      function updateQuantity(itemInput, newQuantity) {
+        const currentQuantity = parseInt(itemInput.val());
+        const itemId = itemInput.data("item-id");
+    
+        $.ajax({
+          type: "POST",
+          url:"/cart/update/" + itemId,
+          data: { quantity: newQuantity },
+          success: function(response) {
+            if (response.success) {
+              itemInput.val(response.newQuantity);
+              
+              console.log("outof stock message",response.message);
+               const totalPriceElement = $("#totalPriceValue");
+              totalPriceElement.text("$" + response.newTotalPrice.toFixed(2));  
+        
+              const totalPriceElement2 = $("#totalPriceValue2");  
+              totalPriceElement2.text("$" + response.newTotalPrice.toFixed(2));  
+            } else {
+              // should Handle error after review 
+            }
+          },
+          error: function(err) 
+          {
+
+            if(err.status===400){
+              alert("Product Out Of Quantity !!!")
+            }
+          }
+        });
+      }
+    });
+    </script>
+     
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const alertParam = urlParams.get('alert');
+
+  if (alertParam === 'emptyCart') {
+    const alertDiv = document.createElement('div');
+    alertDiv.style.position = 'fixed';
+    alertDiv.style.top = '10%';
+    alertDiv.style.left = '50%';
+    alertDiv.style.transform = 'translate(-50%, -50%)';
+    alertDiv.style.backgroundColor = '#fff';
+    alertDiv.style.border = '1px solid #ccc';
+    alertDiv.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+    alertDiv.style.padding = '20px';
+    alertDiv.style.maxWidth = '300px';
+    alertDiv.style.textAlign = 'center';
+    alertDiv.style.borderRadius = '8px';
+    alertDiv.style.border = '1px solid #ccc';
+
+    alertDiv.innerHTML = `
+      <div style="font-size: 20px; margin-bottom: 10px; color: red;">Attention</div>
+      <div>Add items to Cart to Purchase !</div>
+    `;
+
+    document.body.appendChild(alertDiv);
+
+    setTimeout(() => {
+      alertDiv.remove();
+    }, 1500);
+  }
+</script>
+
+
+
+
+
+  <%- include("../partials/footer.ejs") %>

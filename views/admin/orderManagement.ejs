@@ -1,0 +1,136 @@
+
+
+<%- include("../partials/adminHeader.ejs") %>
+        <!-- Content Start -->
+        <div class="content">
+           
+            <%- include("../partials/adminNavbar.ejs") %>
+
+          
+            
+
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Recent Salse</h6>
+                        <a href="">Show All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-white">
+                                    <!-- <th scope="col"><input class="form-check-input" type="checkbox"></th> -->
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">Payment Method</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Details</th>
+                                    <th scope="col">Returns</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% order.forEach(order => { %>
+                                    <tr>
+                                        <td><%= order.userId.name %></td>
+                                        <td><%= order._id %></td>
+                                        <td><%= order.paymentMethod %></td>
+                                        <td><%= order.totalPrice %></td>
+                                        <td>
+                                            <form class="status-form d-flex align-items-center">
+                                                <input type="hidden" name="orderId" value="<%= order._id %>">
+                                                <select name="status" class="form-select action-dropdown" data-order-id="<%= order._id %>">
+                                                    <option value="Shipped" <%= order.status === 'Pending' ? 'selected' : '' %>>Shipped</option>
+                                                    <option value="Delivered" <%= order.status === 'Approved' ? 'selected' : '' %>>Delivered</option>
+                                                    <option value="Canceled" <%= order.status === 'Canceled' ? 'selected' : '' %>>Canceled</option>
+                                                    <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+        
+                                                </select>
+                                                
+                                                <!-- <button type="submit" class="btn btn-primary save-button ms-2">Save</button> -->
+                                            </form>
+                                        </td>
+                                        <td>
+                                        <a href="/admin/viewdetails/<%= order._id %>"><button type="button" class="btn btn-primary view-details-btn" data-bs-toggle="modal" data-bs-target="#productDetailsModal" data-products='<%= JSON.stringify(order.products) %>'>
+                                            View Details
+                                        </button></a>
+                                        </td>
+                                        <td>
+                                            <div class="hello">
+                                                <% if (order.acceptReturn) { %>
+                                                    <!-- Show message for returned order -->
+                                                    <span>Order return accepted</span>
+                                                <% } else if (order.rejectReturn) { %>
+                                                    <!-- Show message for rejected return -->
+                                                    <span>Order return rejected</span>
+                                                <% } else if (order.isReturned) { %>
+                                                    <!-- Show buttons for accepting and rejecting return -->
+                                                    <!-- Accept Return Form -->
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <form class="accept-return-form" action="/admin/acceptreturn" method="POST">
+                                                            <input type="hidden" name="orderId" value="<%= order._id %>">
+                                                            <button type="submit" class="btn btn-success">Accept</button>
+                                                        </form>
+                                            
+                                                        <!-- Reject Return Form -->
+                                                        <form class="reject-return-form" action="/admin/rejectreturn" method="POST">
+                                                            <input type="hidden" name="orderId" value="<%= order._id %>">
+                                                            <button type="submit" class="btn btn-danger">Reject</button>
+                                                        </form>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                <% }); %>
+                                <!-- Your EJS template content goes here -->
+                                <!-- Use EJS tags to iterate through data and fill the table rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Function to handle order status update
+        function updateOrderStatus(orderId, newStatus) {
+            // Send an AJAX request to update the order status
+            fetch(`/admin/updateOrderStatus/${orderId}/${newStatus}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Update the status in the table without reloading
+                    const statusCell = document.getElementById(`status-${orderId}`);
+                    statusCell.textContent = newStatus;
+                } else {
+                    // Handle the case where the update was not successful
+                    console.error('Order status update failed');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    
+        // Add event listeners for status dropdown changes
+        document.querySelectorAll('.action-dropdown').forEach((dropdown) => {
+            dropdown.addEventListener('change', (event) => {
+                const orderId = event.target.getAttribute('data-order-id');
+                const newStatus = event.target.value;
+                updateOrderStatus(orderId, newStatus);
+            });
+        });
+</script>
+
+
+            <%- include("../partials/adminfooter.ejs") %>
+        </div>

@@ -1,0 +1,273 @@
+
+
+<link rel="stylesheet" href="/cropperjs/cropper.css">
+<script src="/cropperjs/cropper.js"></script>
+
+
+<%- include("../partials/adminHeader.ejs") %>
+
+        <!-- Sidebar End --> 
+        
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <%- include("../partials/adminNavbar.ejs") %>
+
+            <!-- Navbar End --> 
+            <!-- Blank Start -->
+            
+                <div class="container mt-5 " >
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3" style="box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 0px, rgba(254, 254, 255, 0.1) 0px 8px 24px, rgba(255, 255, 255, 0.1) 0px 16px 48px;">
+                            <div class="cardr">
+                                <div class="card-header">
+                                    <h2 class="text-center">Edit Product</h2>
+                                </div>
+                                <div class="card-body">
+                                    <form id="editProductForm" action="/admin/editproductpost/<%= product._id %>" method="post" enctype="multipart/form-data">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Product Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" value="<%= product.name %>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Product Description</label>
+                                            <input type="text" class="form-control" id="description" name="description" value="<%= product.description %>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label">Product Price</label>
+                                            <input type="number" class="form-control" id="price" name="price" value="<%= product.price %>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="category" class="form-label">Product Category</label>
+                                            <select id="category" name="category" class="form-select" required>
+                                                <% categories.forEach(category => { %>
+                                                    <option value="<%= category.name %>"><%= category.name %></option>
+                                                <% }); %>
+                                            </select>
+                                        </div>
+
+
+
+
+
+                                        <div class="mb-3">
+                                            <label for="image" class="form-label">Main Product Image</label>
+                                            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                                            <button type="button" class="btn btn-danger" onclick="confirmDeleteImage(this)">Delete Image</button>
+                                                <div class="img-container">
+                                                <img id="imagex" src="/uploads/<%= product.image %>" alt="Main Image" class="mt-2" style="max-width: 150px;">
+                                            </div>
+                                            <button id="btn-crop">crop</button>
+                                            <div class="cropped-container">
+                                                <img src="" id="output">
+                                            </div>
+
+                                        </div>
+
+ 
+                                        <div class="mb-3">
+                                            <label for="additionalImages" class="form-label">Additional Product Images (up to 4)</label>
+                                            <input type="file" class="form-control" id="additionalImages" name="additionalImages" accept="image/*" multiple>
+
+                                            <div class="mt-2">
+                                                <% for (let i = 0; i < product.additionalImages.length; i++) { %>
+                                                    <div>
+                                                        <img src="/uploads/<%= product.additionalImages[i] %>" alt="Additional Image" style="max-width: 50px; max-height: 50px;">
+                                                        <button type="button" class="btn btn-danger" onclick="confirmDeleteImage(this)">Delete Image</button>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="quantity" class="form-label">Product Quantity</label>
+                                            <input type="number" min="0" class="form-control" id="quantity" name="quantity" value="<%= product.quantity %>" required>
+                                        </div>
+        
+        
+                                        <div class="mb-3">
+                                            <label for="offer" class="form-label">Product Offer (%)</label>
+                                            <input type="number" id="offer" name="offer" class="form-control" value="<%= product.offer%>" min="0" max="100">
+                                        </div>
+                                       
+        
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button> 
+                                            <a href="/admin/showproducts" class="btn btn-success">Cancel</a>    
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            <!-- Blank End -->
+
+            <script>
+                // Function to handle the change event of the file input
+                function handleImageChange(input) {
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+            
+                        reader.onload = function (e) {
+                            // Set the source of the image and initialize the Cropper
+                            document.getElementById('imagex').src = e.target.result;
+            
+                            // Initialize Cropper with aspectRatio
+                            const cropper = new Cropper(document.getElementById('imagex'), {
+                                aspectRatio: 1,
+                            });
+            
+                            // Update the cropper instance on the input element
+                            input.cropper = cropper;
+            
+                            // Display the image in the img-container
+                            document.querySelector('.img-container').style.display = 'block';
+                        };
+            
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            
+                document.getElementById('image').addEventListener('change', function () {
+                    // Call the handleImageChange function when the file input changes
+                    handleImageChange(this);
+                });
+            
+                document.querySelector('#btn-crop').addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent the default form submission behavior
+            
+                    // Get the Cropper instance from the file input
+                    const cropper = document.getElementById('image').cropper;
+            
+                    // Check if Cropper instance exists
+                    if (cropper) {
+                        // Get the cropped canvas and display the cropped image
+                        const croppedCanvas = cropper.getCroppedCanvas({
+                            width: 100,  // Set an appropriate width for the canvas
+                            height: 100, // Set an appropriate height for the canvas
+                        });
+                        document.getElementById('output').src = croppedCanvas.toDataURL("image/png");
+                        document.querySelector(".cropped-container").style.display = 'flex';
+                    }
+                });
+            
+                document.getElementById('btn-update-product').addEventListener('click', function (e) {
+                    // Update this function according to your needs
+                    // For now, it just prevents the form submission
+                    e.preventDefault(); // Prevent the default form submission behavior
+                    alert('Update Product Clicked! Form Submission Prevented.');
+                });
+            </script>
+
+
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+            <script> 	
+                document.addEventListener('DOMContentLoaded', function() {
+                    const mainImage = document.getElementById('mainImage');
+                    const additionalImages = document.querySelectorAll('.additional-image');
+            
+                    additionalImages.forEach(image => {
+                        image.addEventListener('click', function() {
+                            mainImage.src = this.src;
+                        });
+                    });
+                });
+            </script>
+
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.getElementById('editProductForm');
+            
+                    form.addEventListener('submit', function(event) {
+                        let valid = true;
+            
+                        // Reset previous error messages
+                        const errorMessages = document.querySelectorAll('.error-message');
+                        errorMessages.forEach(message => message.remove());
+            
+                        // Validate Product Name
+                        const nameField = document.getElementById('name');
+                        if (nameField.value.trim() === '') {
+                            valid = false;
+                            displayErrorMessage(nameField, 'Please enter a product name.');
+                        }
+            
+                        // Validate Product Description
+                        const descriptionField = document.getElementById('description');
+                        if (descriptionField.value.trim() === '') {
+                            valid = false;
+                            displayErrorMessage(descriptionField, 'Please enter a product description.');
+                        }
+            
+                        // Validate Product Price (Positive Number)
+                        const priceField = document.getElementById('price');
+                        if (isNaN(priceField.value) || parseFloat(priceField.value) <= 0) {
+                            valid = false;
+                            displayErrorMessage(priceField, 'Please enter a valid positive price.');
+                        }
+            
+                        // Validate Product Quantity (Positive Number)
+                        const quantityField = document.getElementById('quantity');
+                        if (isNaN(quantityField.value) || parseInt(quantityField.value) <= 0) {
+                            valid = false;
+                            displayErrorMessage(quantityField, 'Please enter a valid positive quantity.');
+                        }
+            
+                        // Validate Additional Product Images (Exactly 4) 
+                        const additionalImagesField = document.getElementById('additionalImages');
+                        const additionalImages = additionalImagesField.files;
+                        if (additionalImages.length !== 4) {
+                            valid = false;
+                            displayErrorMessage(additionalImagesField, 'Please upload exactly 4 additional images.');
+                        }
+            
+                        if (!valid) {
+                            event.preventDefault(); // Prevent form submission if there are errors
+                        }
+                    });
+            
+                    function displayErrorMessage(field, message) {
+                        const errorMessage = document.createElement('div');
+                        errorMessage.classList.add('error-message', 'text-danger');
+                        errorMessage.textContent = message;
+                        field.parentNode.appendChild(errorMessage);
+                    }
+                });
+            </script>
+
+<script>
+    function confirmDeleteImage(button) {
+        // Confirm deletion with a dialog
+        if (confirm("Are you sure you want to delete this image?")) {
+            deleteImage(button);
+        }
+    }
+
+    function deleteImage(button) {
+        // Get the parent div of the image
+        var parentDiv = button.parentNode;
+
+        // Find the image within the parent div
+        var image = parentDiv.querySelector('img');
+
+        // Hide the image
+        image.style.display = 'none';
+
+        // Hide the button
+        button.style.display = 'none';
+
+        // You can also clear the file input value if needed
+        var fileInput = parentDiv.querySelector('input[type="file"]');
+        fileInput.value = '';
+    }
+</script>
+
+            <!-- Footer Start -->
+            <%- include("../partials/adminfooter.ejs") %>
+
+
+            

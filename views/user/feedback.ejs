@@ -1,0 +1,208 @@
+ 
+<%- include("../partials/header.ejs") %>
+
+
+    <style>
+        body {
+            /* background-color: #a2afbb; */
+            font-family: Arial, sans-serif;
+             
+            
+            
+             
+        }
+        .card {
+            background-color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+         }
+        .card-header {
+            border-radius: 15px 15px 0 0;
+        }
+        .form-check-input {
+            margin-left: 0;
+        }
+        textarea{
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        }
+    </style>
+</head>
+
+<body>
+ 
+    <div class="container mt-5">
+        <div class="card mx-auto" style="max-width: 30rem;">
+            <div class="card-header  ">
+                <h5 style="text-align: center;" class="card-title text-dark mt-2">Feedback</h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
+                    <p>
+                        <strong>Your opinion matters</strong>
+                    </p>
+                    <p>
+                        Have some ideas how to improve our order ?
+                    </p>
+                    <strong> Give us your feedback.</strong>
+
+                </div>
+
+                <hr />
+
+                <form class="px-4" id="feedbackForm">
+                    <p class="text-center"><strong>Your rating:</strong></p>
+                    <span>Order ID: </span>
+                    <p id="orderId" style="text-align: center; font-size: large; display: inline; margin-bottom: 40px;"><%= order.orderId %></p>
+
+
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" value="Very good" type="radio" name="exampleForm" id="radio3Example1">
+                        <label class="form-check-label" for="radio3Example1">
+                            Very good
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" value="Good" type="radio" name="exampleForm" id="radio3Example2">
+                        <label class="form-check-label" for="radio3Example2">
+                            Good
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" value="Mediocre" type="radio" name="exampleForm" id="radio3Example3">
+                        <label class="form-check-label" for="radio3Example3">
+                            Mediocre
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" value="Bad" type="radio" name="exampleForm" id="radio3Example4">
+                        <label class="form-check-label" for="radio3Example4">
+                            Bad
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" value="Very bad" type="radio" name="exampleForm" id="radio3Example5">
+                        <label class="form-check-label" for="radio3Example5">
+                            Very bad
+                        </label>
+                    </div>
+
+                    <p class="text-center"><strong>What could we improve?</strong></p>
+
+                    <!-- Message input -->
+                    <div class="form-outline mb-4">
+                        <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+                        <label class="form-label" for="form4Example3">Your feedback</label>
+                    </div>
+                    <!-- <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div> -->
+                    <div class="card-footer text-end">
+                        <a href="/myorders"><button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button></a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery (order matters) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script> 
+    <script>
+
+
+     document.addEventListener('DOMContentLoaded', function() {
+    const feedbackForm = document.getElementById('feedbackForm');
+    
+    feedbackForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        console.log("reached here")
+
+        const ratingElement = document.querySelector('input[name="exampleForm"]:checked');
+        const feedback = document.getElementById('form4Example3').value;
+        const orderId = document.getElementById('orderId').innerText; // Added this line
+
+        if (ratingElement && feedback && orderId) {
+            let ratingValue;
+            switch (ratingElement.value) {
+                case "Very good":
+                    ratingValue = 5;
+                    break;
+                case "Good":
+                    ratingValue = 4;
+                    break;
+                case "Mediocre":
+                    ratingValue = 3;
+                    break;
+                case "Bad":
+                    ratingValue = 2;
+                    break;
+                case "Very bad":
+                    ratingValue = 1;
+                    break;
+                default:
+                    ratingValue = 0;
+            }
+
+
+
+
+            const formData = {
+                orderId, // Added orderId to the formData object
+                rating: ratingValue,
+                comment: feedback
+            };
+
+            console.log(formData)
+// console.log(orderId);
+// console.log(rating);
+// console.log(comment);
+
+            try {
+                const response = await fetch('/submitFeedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Feedback submitted successfully');
+                    window.location.href = '/profile'; 
+                } else {
+                    throw new Error('Server response was not successful');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Feedback submission failed');
+            }
+        } else {
+            alert('Please select a rating, provide feedback, and ensure orderId is set');
+        }    
+    });
+});
+
+    </script>
+    
+ 
+</body>
+ 
+
+
+
+

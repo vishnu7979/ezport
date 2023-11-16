@@ -1,0 +1,399 @@
+<%- include("../partials/header.ejs") -%>
+
+  <style>
+    .selected-address {
+      border: 2px solid lightblue;
+    }
+  </style>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+  <section class="bg-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-8 col-lg-8 mb-4"
+          style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;">
+
+
+          <!-- Checkout -->
+          <div class="card shadow-0 border">
+            <div class="p-4">
+              <h3 class="card-title mb-3">Select Your Address</h3>
+              <div class="row">
+
+              </div>
+              <div class="address-container d-flex flex-nowrap overflow-auto" style="white-space: nowrap;">
+                <% if (address.length> 0) { %>
+                  <% address.forEach(address=> { %>
+                    <div class="address-card p-3 border rounded me-3" style="width: 250px; height: 200px;">
+                      <strong>House Name:</strong>
+                      <%= address.houseName %><br>
+                        <strong>Street:</strong>
+                        <%= address.street %><br>
+                          <strong>City:</strong>
+                          <%= address.city %><br>
+                            <strong>State:</strong>
+                            <%= address.state %><br>
+                              <strong>Pin Code:</strong>
+                              <%= address.zip %><br>
+                                <div class="button-container mt-3"
+                                  style="display: flex; align-items: center; justify-content: space-evenly;">
+                                  <button class="btn btn-primary edit-address" data-address-id="<%= address._id %>">
+                                    Select
+                                  </button>
+
+                                </div>
+                    </div>
+                    <% }); %>
+                      <% } else { %>
+                        <h6 style="color: red;">No Address Found*</h6>
+                        <% } %>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="container p-0 m-0 px-1 pb-3">
+            <div class="address_Form p-4">
+              <form action="/storeaddress" method="post">
+                <div class="row d-flex">
+                  <div class="col-lg-6 col-12 d-flex flex-column p-2 gap-2 ">
+                    <label for="name">Full Name*</label>
+                    <input type="text" name="Name" required>
+                  </div>
+                  <div class="col-lg-6 col-12 d-flex flex-column p-2 gap-2 ">
+                    <label for="houseName">House Name*</label>
+                    <input type="text" name="userName" required>
+                  </div>
+                </div>
+                <div class="row d-flex">
+                  <div class="d-flex col-lg-6 col-12 flex-column p-2 gap-2 ">
+                    <label for="street">Street*</label>
+                    <input type="text" name="street" required>
+                  </div>
+                  <div class="d-flex col-lg-6 col-12 flex-column p-2 gap-2 ">
+                    <label for="city">Town/City*</label>
+                    <input type="text" name="city" required>
+                  </div>
+                </div>
+                <div class="d-flex row">
+                  <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
+                    <label for="state">State*</label>
+                    <select class="form-control" name="state" required>
+                      <option value="kerala">kerala</option>
+                      <option value="Tamilnaadu">tamilnaadu</option>
+                      <option value="up">UP</option>
+                      <option value="ap">AP</option>
+                      <option value="msg">MSG</option>
+                      <option value="chicago">Chicago</option>
+                      <option value="Goa">Goa</option>
+                    </select>
+                    <!-- <input type="text" name="state" required> -->
+                  </div>
+                  <div class="d-flex col-lg-6 flex-column p-2 gap-2 ">
+                    <label for="zip">ZIP code*</label>
+                    <input type="number" name="zip" required>
+                  </div>
+
+                </div>
+                <div class="row f-flex align-items-end">
+
+                  <div class="p-2 col-lg-6 billing_button">
+                    <button class="btn btn-danger p-2" type="submit">
+                      ADD ADDRESS
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+           
+
+            <div>
+              <h3>Select any payment Method</h3>
+              <label>
+                <input type="radio" name="paymentMethod" value="wallet">
+                Wallet
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="paymentMethod" value="netBanking">
+                Net Banking
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="paymentMethod" value="cashOnDelivery">
+                Cash on Delivery
+              </label>
+            </div>
+
+          </div>
+
+
+          <div class="button-container mt-3" style="display: flex; justify-content: end; margin-bottom: 20px;">
+            <button id="processOrder" class="btn btn-success">
+              Process Order
+            </button>
+          </div>
+
+
+        </div>
+        <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+          <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+            <h6 class="mb-3">Summary</h6>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2"></p>
+              <p class="mb-2" id="totalPrice">
+                <%=totalPrice%>
+              </p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Coupon Discount:</p>
+              <p class="mb-2 text-danger" id="couponDiscount">-00.00</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Shipping cost:</p>
+              <p class="mb-2">+ $00.00</p>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Grant Total:</p>
+              <p class="mb-2 fw-bold" id="grantTotal">
+                <%=grantTotal%>
+              </p>
+            </div>
+
+            <div class="card mb-3 border"
+              style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;">
+              <div class="card-body">
+
+                <form id="couponForm">
+                  <div class="form-group">
+                    <label class="form-label">Have coupon?</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control border" name="couponCode" id="couponCodeInput"
+                        placeholder="Coupon code" />
+                      <button class="btn btn-light border" id="applyCouponButton" type="submit">Apply</button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Available Coupons:</label>
+                    <select class="form-select" id="availableCoupons">
+                      <option value="">Select a coupon</option>
+                      <% coupons.forEach(function(coupon) { %>
+                        <option value="<%= coupon.couponName %>">
+                          <%= coupon.couponName %>
+                        </option>
+                        <% }); %>
+                    </select>
+                  </div>
+                </form>
+
+
+              </div>
+            </div>
+
+            <hr />
+            <h6 class="text-dark my-4">Items in cart</h6>
+
+            <% products.forEach(item=> { %>
+
+              <div class="d-flex align-items-center mb-4"
+                style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;">
+                <div class="me-3 position-relative">
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                    <%= item.quantity %>
+                  </span>
+                  <img src="/uploads/<%= item.productId.image %>" alt="<%= item.productId.name %>"
+                    style="height: 96px; width: 96x;" class="img-sm rounded border" />
+                </div>
+                <div class="">
+                  <a href="#" class="nav-link">
+                    <%= item.productId.name %> <br />
+
+                  </a>
+                  <div class="price text-muted">Total: $<%= item.productId.price.toFixed(2) %>
+                  </div>
+                </div>
+              </div>
+              <% }); %>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <script src="path/to/checkout.js"></script>
+  <script>
+    document.getElementById('availableCoupons').addEventListener('change', function () {
+      const selectedCoupon = this.value;
+      document.getElementById('couponCodeInput').value = selectedCoupon;
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('#availableCoupons').on('change', function () {
+        const selectedCouponName = $('#availableCoupons option:selected').text().trim();
+
+
+        $('#couponCodeInput').val(selectedCouponName);
+      });
+
+      $('#applyCouponButton').on('click', function () {
+        const couponCode = $('#couponCodeInput').val();
+
+      });
+    });
+  </script>
+
+
+
+  <script>
+
+    $('#applyCouponButton').on('click', function (event) {
+      event.preventDefault();
+
+      const couponCode = $('#couponCodeInput').val();
+      const totalPrice = parseFloat($('#totalPrice').text());
+
+
+      $.ajax({
+        type: 'POST',
+        url: '/applyCoupon',
+        data: { couponCode: couponCode, totalPrice: totalPrice },
+        success: function (data) {
+
+          $('#grantTotal').text(data.grantTotal);
+          $('#couponDiscount').text(data.couponDiscount);
+        },
+        error: function (error) {
+
+        }
+      });
+    });
+
+  </script>
+
+
+  <!-- script for sending the data to the backe end through ajax-->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let selectedAddress = null;
+      let selectedPaymentMethod = null;
+
+      // Function to handle address selection
+      function selectAddress(addressId) {
+        selectedAddress = addressId;
+      }
+
+      // Function to handle payment method selection
+      document.querySelectorAll('input[name="paymentMethod"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          selectedPaymentMethod = this.value;
+        });
+      });
+
+      // Add event listener for each "Select" button
+      document.querySelectorAll('.edit-address').forEach(function (button) {
+        button.addEventListener('click', function () {
+          selectAddress(this.dataset.addressId);
+        });
+      });
+
+      // Function to process the order
+      document.getElementById('processOrder').addEventListener('click', function () {
+        if (selectedAddress && selectedPaymentMethod) {
+          const totalPrice = '<%=totalPrice%>';
+          const couponDiscount = parseFloat($('#couponDiscount').text());
+          const grantTotal = parseFloat($('#grantTotal').text());
+
+          // Send data to the backend using fetch
+          fetch('/processOrder', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              address: selectedAddress,
+              paymentMethod: selectedPaymentMethod,
+              totalPrice: totalPrice,
+              couponDiscount: couponDiscount,
+              grantTotal: grantTotal,
+            }),
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.id) {
+                var options = {
+                  key: "rzp_test_waFdN3ZvExWNh1", // Replace with your actual key_id
+                  amount: data.amount,
+                  currency: data.currency,
+                  name: "e_ZPORT",
+                  description: "Test Transaction",
+                  image: "https://example.com/your_logo",
+                  order_id: data.id,
+                  handler: function (response) {
+                    $.ajax({
+                      type: 'POST',
+                      url: "/saveOrder",
+                      data: { order: response }
+                    })
+                      .done(function (data) {
+                        console.log("Order saved successfully", data);
+                        window.location.href = '/confirm';
+                      })
+                      .fail(function (jqXHR, textStatus, errorThrown) {
+                        console.error("Error saving order:", textStatus, errorThrown);
+                        alert("Error saving order. Please contact support.");
+                      });
+                  },
+                  prefill: {
+                    name: "Gaurav Kumar",
+                    email: "gaurav.kumar@example.com",
+                    contact: "9000090000"
+                  },
+                  notes: {
+                    address: "Razorpay Corporate Office"
+                  },
+                  theme: {
+                    color: "#3399cc"
+                  }
+                };
+
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response) {
+                  alert(response.error.code);
+                  alert(response.error.description);
+                  alert(response.error.source);
+                  alert(response.error.step);
+                  alert(response.error.reason);
+                  alert(response.error.metadata.order_id);
+                  alert(response.error.metadata.payment_id);
+                });
+                rzp1.open();
+              } else {
+                // Handle the response from the backend (if needed)
+                window.location.href = data.redirectUrl;
+              }
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+          alert('Please select an address and payment method.');
+        }
+      });
+    });
+  </script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+ 
+
+
+
+  <!-- Footer -->
+  <%- include("../partials/footer.ejs") -%>
+    <!-- Footer -->

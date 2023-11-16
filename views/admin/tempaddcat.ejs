@@ -1,0 +1,62 @@
+ 
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Page Title</title>
+    <!-- Include Bootstrap CSS via CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add your custom CSS file if needed -->
+    <link href="custom.css" rel="stylesheet">
+    <style>
+
+    </style>
+</head>
+
+<body>
+ 
+
+    
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center">New Coupon</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/addCoupons" method="post" id="formCoupon">
+                        <div class="mb-3">
+                            <label for="couponName" class="form-label">Coupon Name*</label>
+                            <input type="text" class="form-control" name="couponName" id="couponName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="couponValue" class="form-label">Amount*</label>
+                            <input type="text" class="form-control" name="couponValue" id="couponValue" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="maxValue" class="form-label">Max Value*</label>
+                                <input type="text" class="form-control" name="maxValue" id="maxValue" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="minValue" class="form-label">Min Value*</label>
+                                <input type="text" class="form-control" name="minValue" id="minValue" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="expiryDate" class="form-label">Expiry Date*</label>
+                                <input type="date" class="form-control" name="expiryDate" id="expiryDate" required>
+                            </div>
+                        </div>
+                        <div class="text-success mb-3"><%= locals.suMessage ? suMessage : " " %></div>
+                        <div class="text-danger mb-3"><%= locals.message ? message : " " %></div>
+                        <div class="text-center">
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

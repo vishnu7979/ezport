@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Sport Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('images/banner-bg.png'); /* Add your background image here */
+            background-size: cover;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white */
+            backdrop-filter: blur(5px); /* Apply a 5px blur */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .signup-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #333;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #FF5722;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #E64A19;
+        }
+
+        .form-group .login-link {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .form-group .login-link a {
+            color: #FF5722;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <p><%=locals.msg%></p>
+        <form action="/signuppost" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required value="<%= typeof username !== 'undefined' ? username : '' %>">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required value="<%= typeof email !== 'undefined' ? email : '' %>">
+                
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="error-message"><%= error %></div>
+                <% } %>
+
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Sign Up</button>
+            </div>
+            <div class="form-group login-link">
+                Already have an account? <a href="/login">Login here</a>
+            </div>
+        </form>
+    </div>
+    
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            // Prevent the form from submitting if validation fails
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+
+        function validateForm() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            let isValid = true;
+
+            // Simple username validation (at least 3 characters)
+            if (username.length < 3) {
+                alert('Username must be at least 3 characters long');
+                isValid = false;
+            }
+
+            // Simple email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Simple password validation (at least 6 characters)
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    });
+</script>
+
+</html>

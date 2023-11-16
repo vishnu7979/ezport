@@ -1,0 +1,126 @@
+<%- include("../partials/adminHeader.ejs") %>
+
+<!-- Sidebar End -->
+<!-- Content Start -->
+<div class="content">
+    <!-- Navbar Start -->
+    <%- include("../partials/adminNavbar.ejs") %>
+ 
+    <!-- Blank Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="row vh-100 bg-secondary rounded align-items-center justify-content-center mx-0">
+            <main>
+                <div class="product-container">
+                    <h2>Add Product</h2>
+                    <form id="addProductForm" action="/admin/addproductpost" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="name">Product Name</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Product Description</label>
+                            <input type="text" id="description" name="description" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Product Price</label>
+                            <input type="number" id="price" name="price" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Product Category</label>
+                            <select id="category" name="category" required class="form-control">
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category.name %>"><%= category.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Main Product Image</label>
+                            <input type="file" id="image" name="image" accept="image/*" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Product Quantity</label>
+                            <input type="number" id="quantity" name="quantity" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalImages">Additional Product Images (up to 4)</label>
+                            <input type="file" id="additionalImages" name="additionalImages" accept="image/*" multiple class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="offer">Product Offer (%)</label>
+                            <input type="number" placeholder="optional" id="offer" name="offer" class="form-control" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Add Product</button>
+                            <a href="/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- Blank End -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('addProductForm');
+
+        form.addEventListener('submit', function(event) {
+            let valid = true;
+
+            // Reset previous error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(message => message.remove());
+
+            // Validate Product Name
+            const nameField = document.getElementById('name');
+            if (nameField.value.trim() === '') {
+                valid = false;
+                displayErrorMessage(nameField, 'Please enter a product name.');
+            }
+
+            // Validate Product Description
+            const descriptionField = document.getElementById('description');
+            if (descriptionField.value.trim() === '') {
+                valid = false;
+                displayErrorMessage(descriptionField, 'Please enter a product description.');
+            }
+
+            // Validate Product Price
+            const priceField = document.getElementById('price');
+            if (isNaN(priceField.value) || parseFloat(priceField.value) < 0) {
+                valid = false;
+                displayErrorMessage(priceField, 'Please enter a valid non-negative price.');
+            }
+
+            // Validate Product Quantity
+            const quantityField = document.getElementById('quantity');
+            if (isNaN(quantityField.value) || parseInt(quantityField.value) < 0) {
+                valid = false;
+                displayErrorMessage(quantityField, 'Please enter a valid non-negative quantity.');
+            }
+
+            // Validate Additional Product Images
+            const additionalImagesField = document.getElementById('additionalImages');
+            const additionalImages = additionalImagesField.files;
+            if (additionalImages.length !== 4) {
+                valid = false;
+                displayErrorMessage(additionalImagesField, 'Please upload exactly 4 additional images.');
+            }
+
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission if there are errors
+            }
+        });
+
+        function displayErrorMessage(field, message) {
+            const errorMessage = document.createElement('div');
+            errorMessage.classList.add('error-message', 'text-danger'); // Added 'text-danger'
+            errorMessage.textContent = message;
+            field.parentNode.appendChild(errorMessage);
+        }
+    });
+</script>
+
+    <!-- Footer Start -->
+    <%- include("../partials/adminfooter.ejs") %>

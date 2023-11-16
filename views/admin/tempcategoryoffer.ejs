@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+        display: flex;
+        align-items: center;
+    }
+
+    input[type="number"] {
+width: 200px; /* Increased width */
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 5px;
+margin-right: 10px;
+}
+    button {
+        padding: 8px 16px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+</head>
+<body>
+    <h1>Active Categories</h1>
+    <ul>
+        <% activeCategories.forEach(category => { %>
+            <li>
+                <%= category.name %>
+                
+                <div>
+                    <input type="number" id="percentage_<%= category._id %>" placeholder="Enter offer in percentage (%)" min="0" max="100" required>
+                    <input type="hidden" id="categoryId_<%= category._id %>" value="<%= category._id %>">
+                    <button onclick="applyOffer('<%= category._id %>')">Apply</button>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
+
+    <script>
+        function applyOffer(categoryId) {
+            var percentage = document.getElementById('percentage_' + categoryId).value;
+            var categoryIdValue = document.getElementById('categoryId_' + categoryId).value;
+
+            // Make an AJAX request to send the data to the backend
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/admin/applyOffer', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    // Success
+                    var response = JSON.parse(xhr.responseText);
+                    console.log(response);
+                } else {
+                    // Error
+                    console.error(xhr.statusText);
+                }
+            };
+            xhr.onerror = function () {
+                console.error('Network Error');
+            };
+            xhr.send(JSON.stringify({ categoryId: categoryIdValue, percentage: percentage }));
+        }
+    </script>
+</body>
+</html>
+
+
+

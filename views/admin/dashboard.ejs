@@ -1,0 +1,372 @@
+<%- include("../partials/adminHeader.ejs") %>
+  <!-- Content Start -->
+  <div class="content">
+    <%- include("../partials/adminNavbar.ejs") %>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+
+
+      <!-- Sale & Revenue Start -->
+      <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+          <div class="col-sm-6 col-xl-3" id="todaysOrderDiv">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+              <i class="fa fa-chart-line fa-3x text-primary"></i>
+              <div class="ms-3">
+                <p class="mb-2">todaysOrder</p>
+                <h6 class="mb-0">$1234</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-3" id="totalOrderDiv">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+              <i class="fa fa-chart-bar fa-3x text-primary"></i>
+              <div class="ms-3">
+                <p class="mb-2">totalOrder</p>
+                <h6 class="mb-0">$1234</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-3" id="avgOrderDiv">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+              <i class="fa fa-chart-area fa-3x text-primary"></i>
+              <div class="ms-3">
+                <p class="mb-2">avgOrder</p>
+                <h6 class="mb-0">$1234</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-3" id="totalRevenueDiv">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+              <i class="fa fa-chart-pie fa-3x text-primary"></i>
+              <div class="ms-3">
+                <p class="mb-2">totalRevenue</p>
+                <h6 class="mb-0">$1234</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+     </div>
+    
+      <!-- Sale & Revenue End -->
+
+
+      <!-- Sales Chart Start -->
+      <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+          
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+          
+         
+          
+          <!-- Your Daily Sales Chart -->
+          <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary text-center rounded p-4">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Daily Sales</h6>
+                <a href="#">Show All</a>
+              </div>
+              <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+              <button id="downloadDailyPDF">Download PDF</button>
+              <button id="downloadDailyExcel">Download Excel</button>
+
+            </div>
+          </div>
+
+          <script>
+            document.getElementById('downloadDailyPDF').addEventListener('click', function() {
+              const dailyChartCanvas = document.getElementById('myChart');
+              html2pdf(dailyChartCanvas).outputPdf();
+            });
+            </script>
+          
+          <!-- Repeat the same structure for other charts with different IDs and buttons -->
+          <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary text-center rounded p-4">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Monthly Sales</h6>
+                <a href="#">Show All</a>
+              </div>
+              <canvas id="myMonthChart" style="width:100%;max-width:600px"></canvas>
+              <button id="downloadMonthlyPDF">Download PDF</button>
+              <button id="downloadMonthlyExcel">Download Excel</button>
+            </div>
+          </div>
+          <script>
+            document.getElementById('downloadMonthlyPDF').addEventListener('click', function() {
+              const monthlyChartCanvas = document.getElementById('myMonthChart');
+              html2pdf(monthlyChartCanvas).outputPdf();
+            });
+            </script>
+<br>
+           <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+              <div class="bg-secondary text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                  <h6 class="mb-0">Yearly Sales</h6>
+                  <a href="#">Show All</a>
+                </div>
+                <canvas id="myYearChart" style="width:100%;max-width:600px"></canvas>
+                <button id="downloadYearlyPDF">Download PDF</button>
+                <button id="downloadYearlyExcel">Download Excel</button>
+              </div>
+            </div>
+            <script>
+              document.getElementById('downloadYearlyPDF').addEventListener('click', function() {
+                const monthlyChartCanvas = document.getElementById('myYearChart');
+                html2pdf(yearlyChartCanvas).outputPdf();
+              });
+              </script>
+            
+           <div class="col-sm-12 col-xl-6">
+             <div class="bg-secondary text-center rounded p-4">
+               <div class="d-flex align-items-center justify-content-between mb-4">
+                 <h6 class="mb-0">Order Count by Payment Method</h6>
+              </div>
+             <canvas id="myPaymentMethodChart" style="width:100%;max-width:600px"></canvas>
+             <button id="downloadPaymentMethodPDF">Download PDF</button>
+             <button id="downloadPaymentMethodExcel">Download Excel</button>
+            </div>
+           </div>
+           <script>
+            document.getElementById('downloadPaymentMethodPDF').addEventListener('click', function() {
+              const monthlyChartCanvas = document.getElementById('myPaymentMethodChart');
+              html2pdf(paymentChartCanvas).outputPdf();
+            });
+            </script>
+           
+          </div>
+       
+        
+
+      </div>
+      <!-- Sales Chart End -->
+
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" 
+      integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+
+
+       <script>
+        // Fetch chart data from the server
+        fetch('/admin/chartData')
+          .then(response => response.json())
+          .then(data => {
+            const { dayData, monthData, yearData, paymentMethodData } = data;
+    
+            // Daily Chart
+            new Chart("myChart", {
+              type: "bar",
+              data: {
+                labels: dayData.dates,
+                datasets: [{
+                  backgroundColor: ["red", "green", "blue", "grey", "brown"],
+                  data: dayData.orderCounts
+                }]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: "Daily Order Counts"
+                }
+              }
+            });
+    
+            // Monthly Chart
+            new Chart("myMonthChart", {
+              type: "bar",
+              data: {
+                labels: monthData.dates,
+                datasets: [{
+                  backgroundColor: ["red", "green", "blue", "grey", "brown"],
+                  data: monthData.orderCounts
+                }]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: "Monthly Order Counts"
+                }
+              }
+            });
+    
+            // Yearly Chart
+            new Chart("myYearChart", {
+              type: "pie",
+              data: {
+                labels: yearData.dates,
+                datasets: [{
+                  backgroundColor: ["red", "green", "blue", "grey", "brown"],
+                  data: yearData.orderCounts
+                }]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: "Yearly Order Counts"
+                }
+              }
+            });
+    
+            // Payment Method Chart
+            new Chart("myPaymentMethodChart", {
+              type: "pie",
+              data: {
+                labels: paymentMethodData.labels,
+                datasets: [{
+                  backgroundColor: ["red", "green", "blue", "grey", "brown"],
+                  data: paymentMethodData.orderCounts
+                }]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: "Order Count by Payment Method"
+                }
+              }
+            });
+    
+            document.getElementById('todaysOrderDiv').querySelector('h6').innerText = `${data.todaysOrder}`;
+            document.getElementById('totalOrderDiv').querySelector('h6').innerText = `${data.totalOrder}`;
+            document.getElementById('avgOrderDiv').querySelector('h6').innerText = `${data.avgOrder}`;
+            document.getElementById('totalRevenueDiv').querySelector('h6').innerText =` ₹${data.totalRevenue}`;
+          })
+          .catch(error => console.error('Error fetching chart data:', error));
+      </script>
+    
+
+
+<script>
+  function downloadExcel(chartId, fileName) {
+    const chartCanvas = document.getElementById(chartId);
+
+    // Extract chart data
+    const chart = Chart.getChart(chartCanvas);
+    const labels = chart.data.labels;
+    const data = chart.data.datasets[0].data;
+
+    // Create Excel workbook and add a worksheet
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Chart Data');
+
+    // Add data to the worksheet
+    worksheet.addRow(['Dates', 'No:Of Orders']);
+    labels.forEach((label, index) => {
+      worksheet.addRow([label, data[index]]);
+    });
+
+    // Save the workbook
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName + '.xlsx';
+      link.click();
+    });
+  }
+
+  // Daily Chart
+  document.getElementById('downloadDailyExcel').addEventListener('click', function() {
+    downloadExcel('myChart', 'daily_chart_data');
+  });
+
+  // Monthly Chart
+  document.getElementById('downloadMonthlyExcel').addEventListener('click', function() {
+    downloadExcel('myMonthChart', 'monthly_chart_data');
+  });
+
+  // Yearly Chart
+  document.getElementById('downloadYearlyExcel').addEventListener('click', function() {
+    downloadExcel('myYearChart', 'yearly_chart_data');
+  });
+
+  // Payment Method Chart
+  document.getElementById('downloadPaymentMethodExcel').addEventListener('click', function() {
+    downloadExcel('myPaymentMethodChart', 'payment_method_chart_data');
+  });
+</script>
+
+
+
+
+
+
+
+
+
+      
+     
+    
+
+      <!-- Recent Sales Start -->
+      <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Recent Sales</h6>
+                <a href="/admin/orderManagement">Show All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-white">
+                            <th scope="col">User</th>
+                            <th scope="col">Order Id</th>
+                            <th scope="col">payment Method</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status (view only)</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% order.slice(0, 4).forEach(order => { %>
+                            <tr>
+                                <td><%= order.userId.name %></td>
+                                <td><%= order._id %></td>
+                                <td><%= order.paymentMethod %></td>
+                                <td><%= order.totalPrice %></td>
+                                
+                                    <td>
+                                        <form class="status-form d-flex align-items-center">
+                                            <input type="hidden" name="orderId" value="<%= order._id %>">
+                                            <select name="status" class="form-select action-dropdown" data-order-id="<%= order._id %>">
+                                                <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                                <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                                <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                                <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                    
+                                
+                                <td>
+                                    <!-- <button type="button" class="btn btn-primary view-details-btn" data-bs-toggle="modal" data-bs-target="#productDetailsModal" data-products='<%= JSON.stringify(order.products) %>'>
+                                        View Details
+                                    </button> -->
+                                    <a href="/admin/viewdetails/<%= order._id %>"><button type="button" class="btn btn-primary view-details-btn" data-bs-toggle="modal" data-bs-target="#productDetailsModal" data-products='<%= JSON.stringify(order.products) %>'>
+                                        View Details
+                                     </button></a>
+                                </td>
+                                
+                            </tr>
+                        <% }); %>
+                       
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>       
+      <!-- Recent Sales End -->
+
+
+      <%- include("../partials/adminfooter.ejs") %>

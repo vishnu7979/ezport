@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-wallet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('/images/banner-bg.png');
+            background-size: cover;
+            margin: 0;
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .wallet-container {
+            background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjOvSperRYjHH9-EHlKZJBfwvXy4rJpyerzHQsnp8DuuycYU5_);
+            width: 320px;
+            color: #fff;
+            font-size: 15px;
+            padding: 20px 20px 0;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            position: absolute;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            text-align: left;
+        }
+
+        .fa-user {
+            float: right;
+        }
+
+        .fa-align-left {
+            margin-right: 15px;
+        }
+
+        .amount-box img {
+            width: 50px;
+        }
+
+        .amount {
+            font-size: 35px;
+        }
+
+        .amount-box p {
+            margin-top: 10px;
+            margin-bottom: -10px;
+        }
+
+        .btn-group {
+            margin: 20px 0;
+        }
+
+        .btn-group .btn {
+            margin: 8px;
+            border-radius: 20px !important;
+            font-size: 12px;
+        }
+
+        .footer-menu {
+            margin: 20px -20px 0;
+            bottom: 0;
+            border-top: 1px solid #ccc;
+            padding: 10px 10px 0;
+        }
+
+        .footer-menu p {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<%- include("../partials/header.ejs") %>
+
+<body>
+
+
+    <div class="wallet-container text-center">
+        <p class="page-title"><i class="fa fa-align-left"></i>My E-wallet<i class="fa fa-user"></i></p>
+
+        <div class="amount-box text-center">
+            <img src="https://lh3.googleusercontent.com/ohLHGNvMvQjOcmRpL4rjS3YQlcpO0D_80jJpJ-QA7-fQln9p3n7BAnqu3mxQ6kI4Sw" alt="wallet">
+            <p>Total Balance</p>
+            <p class="amount">₹ <%= walletBalance %></p>
+        </div>
+
+        <div class="btn-group text-center">
+            <button type="button" class="btn btn-outline-light">Add Money</button>
+            <button type="button" class="btn btn-outline-light">Withdraw</button>
+        </div>
+
+        <div class="footer-menu">
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <i class="fa fa-home"></i>
+                    <p>Home</p>
+                </div>
+
+                <div class="col-md-3">
+                    <i class="fa fa-inbox"></i>
+                    <p>Inbox</p>
+                </div>
+
+                <div class="col-md-3">
+                    <i class="fa fa-university"></i>
+                    <p>Bank</p>
+                </div>
+
+                <div class="col-md-3">
+                    <i class="fa fa-barcode"></i>
+                    <p>Scan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

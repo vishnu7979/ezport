@@ -1,0 +1,313 @@
+<head>
+   <style>
+     .icon-hover:hover {
+border-color: #3b71ca !important;
+background-color: white !important;
+}
+
+.icon-hover:hover i {
+ color: blue
+}
+   </style>
+   
+   <link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+rel="stylesheet"
+/>
+
+</head>
+  <!--Main Navigation-->
+<header>
+   <!-- Jumbotron -->
+   <div class="p-3 text-center bg-white border-bottom">
+     <div class="container">
+       <div class="row gy-3">
+         <!-- Left elements -->
+         <div class="col-lg-2 col-sm-4 col-4">
+           <a href="/"  class="float-start">
+            <h3>e-ZPORT</h3>
+           </a>
+         </div>
+         <!-- Left elements -->
+ 
+         <!-- Center elements -->
+         <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+           <div class="d-flex float-end">
+ 
+
+            <% if (isLoggedIn) { %>
+               <a href="/logout" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" >
+                   <p class="d-none d-md-block mb-0">LogOut</p>
+               </a>
+           <% } else { %>
+               <a href="/login" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" >
+                   <p class="d-none d-md-block mb-0">Log In</p>
+               </a>
+           <% } %>
+            
+            
+
+             <!-- <a href="#" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"  > <i class="fas fa-heart m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Wishlist</p> </a> -->
+             <a href="/cart" class="border rounded py-1 px-3 nav-link d-flex align-items-center"  > <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0">My cart</p> </a>
+             <a href="/profile" class="border rounded py-1 px-3 nav-link d-flex align-items-center" > <i class="fas fa-user-alt m-1 me-md-2"></i>Profile</p> </a>
+
+           </div>
+         </div>
+         <!-- Center elements -->
+         
+         <!-- Right elements -->
+         <div class="col-lg-5 col-md-12 col-12">
+          <div class="input-group float-center">
+            <div class="form-outline">
+              <input type="search" id="form1" class="form-control" />
+              <label class="form-label" for="form1">Search</label>
+            </div>
+            <button type="button" class="btn btn-primary shadow-0" onclick="performSearch()">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+         <!-- Right elements -->
+       </div>
+     </div>
+   </div>
+   <!-- Jumbotron -->
+ 
+   <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-light bg-white">
+     <!-- Container wrapper -->
+     <div class="container justify-content-center justify-content-md-between">
+       <!-- Toggle button -->
+       <button
+               class="navbar-toggler border py-2 text-dark"
+               type="button"
+               data-mdb-toggle="collapse"
+               data-mdb-target="#navbarLeftAlignExample"
+               aria-controls="navbarLeftAlignExample"
+               aria-expanded="false"
+               aria-label="Toggle navigation"
+               >
+         <i class="fas fa-bars"></i>
+       </button>
+ 
+       <!-- Collapsible wrapper -->
+       <div class="collapse navbar-collapse" id="navbarLeftAlignExample">
+         <!-- Left links -->
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+           <li class="nav-item">
+             <a class="nav-link text-dark" aria-current="page" href="/">Home</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link text-dark" href="/myorders">My Orders</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link text-dark" href="/contact">Contact Us</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link text-dark" href="/user/products">Shop</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link text-dark" href="/displayaddress">Address</a>
+           </li>
+           <!-- <li class="nav-item">
+             <a class="nav-link text-dark" href="/wallet">Wallet</a>
+           </li> -->
+           <li class="nav-item">
+             <a class="nav-link text-dark" href="/cart">Cart</a>
+           </li>
+          
+           <!-- Navbar dropdown -->
+           <!-- <li class="nav-item dropdown">
+             <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+               Others
+             </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+               <li>
+                 <a class="dropdown-item" href="#">Action</a>
+               </li>
+               <li>
+                 <a class="dropdown-item" href="#">Another action</a>
+               </li>
+               <li><hr class="dropdown-divider" /></li>
+               <li>
+                 <a class="dropdown-item" href="#">Something else here</a>
+               </li>
+             </ul>
+           </li> -->
+         </ul>
+         <!-- Left links -->
+       </div>
+     </div>
+     <!-- Container wrapper -->
+   </nav>
+   <!-- Navbar -->
+   <!-- Jumbotron -->
+   <div class="bg-primary text-white py-5">
+     <div class="container py-5">
+       <h1>
+         Best products & <br />
+         brands in our store
+       </h1>
+       <p>
+         Trendy Products, Factory Prices, Excellent Service
+       </p>
+       <button type="button" class="btn btn-outline-light">
+         Learn more
+       </button>
+       <button type="button" class="btn btn-light shadow-0 text-primary pt-2 border border-white">
+       <a href="/user/products"><span class="pt-1">Purchase now</span></a>
+      </button>
+     </div>
+   </div>
+   <!-- Jumbotron -->
+ </header>
+ <!-- Products -->
+ <section>
+   <div class="container my-5">
+     <header class="mb-4">
+       <h3>New products</h3>
+     </header>
+ 
+     <div class="row" >
+     
+        <% product.slice(0, 4).forEach(product => { %>
+
+        <div class="col-lg-3 col-md-4 col-sm-6 d-flex" style=" box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;">
+          <div class="card my-2 shadow-2-strong" style="width: 18rem; ">
+            <img src="/uploads/<%= product.image %>" alt="<%= product.name %>" class="card-img-top" style="height: 200px; object-fit: contain; width: 100%;">
+            <div class="card-body d-flex flex-column">
+              <h3 class="card-title"><%= product.name %></h3>
+              <h5 class="card-title"><%= product.price %></h5>
+              <p class="card-text"><%= product.description %></p>
+              <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                <form action="/addtocart" method="post">
+                  <input type="hidden" name="productId" value="<%= product._id %>">
+                  <button type="submit" class="btn btn-primary shadow-0 me-1">Add to Cart <i class="fa-solid fa-cart-shopping"></i></button>
+                </form>
+                <form action="/product/<%= product._id %>">
+                  <input type="hidden" name="productId" value="<%= product._id %>">
+                  <a href="/product/<%= product._id %>"><button type="submit" class="btn btn-primary shadow-0 me-1">View Details</button></a>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+    
+    
+    
+    
+   </div>
+ </section>
+ <!-- Products -->
+ 
+ <!-- Feature -->
+ <section class="mt-5" style="background-color: #f5f5f5;">
+   <div class="container text-dark pt-3">
+     <header class="pt-4 pb-3">
+       <h3>Why choose us</h3>
+     </header>
+ 
+     <div class="row mb-4">
+       <div class="col-lg-4 col-md-6">
+         <figure class="d-flex align-items-center mb-4">
+           <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+             <i class="fas fa-camera-retro fa-2x fa-fw text-primary floating"></i>
+           </span>
+           <figcaption class="info">
+             <h6 class="title">Reasonable prices</h6>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+           </figcaption>
+         </figure>
+         <!-- itemside // -->
+       </div>
+       <!-- col // -->
+       <div class="col-lg-4 col-md-6">
+         <figure class="d-flex align-items-center mb-4">
+           <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+             <i class="fas fa-star fa-2x fa-fw text-primary floating"></i>
+           </span>
+           <figcaption class="info">
+             <h6 class="title">Best quality</h6>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+           </figcaption>
+         </figure>
+         <!-- itemside // -->
+       </div>
+       <!-- col // -->
+       <div class="col-lg-4 col-md-6">
+         <figure class="d-flex align-items-center mb-4">
+           <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+             <i class="fas fa-plane fa-2x fa-fw text-primary floating"></i>
+           </span>
+           <figcaption class="info">
+             <h6 class="title">Worldwide shipping</h6>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+           </figcaption>
+         </figure>
+         <!-- itemside // -->
+       </div>
+       <!-- col // -->
+       <div class="col-lg-4 col-md-6">
+         <figure class="d-flex align-items-center mb-4">
+           <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+             <i class="fas fa-users fa-2x fa-fw text-primary floating"></i>
+           </span>
+           <figcaption class="info">
+             <h6 class="title">Customer satisfaction</h6>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+           </figcaption>
+         </figure>
+         <!-- itemside // -->
+       </div>
+       <!-- col // -->
+       <div class="col-lg-4 col-md-6">
+         <figure class="d-flex align-items-center mb-4">
+           <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+             <i class="fas fa-thumbs-up fa-2x fa-fw text-primary floating"></i>
+           </span>
+           <figcaption class="info">
+             <h6 class="title">Happy customers</h6>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+           </figcaption>
+         </figure>
+         <!-- itemside // -->
+       </div>
+       <!-- col // -->
+       <div class="col-lg-4 col-md-6">
+         <figure class="d-flex align-items-center mb-4">
+           <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+             <i class="fas fa-box fa-2x fa-fw text-primary floating"></i>
+           </span>
+           <figcaption class="info">
+             <h6 class="title">Thousand items</h6>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+           </figcaption>
+         </figure>
+         <!-- itemside // -->
+       </div>
+       <!-- col // -->
+     </div>
+   </div>
+   <!-- container end.// -->
+ </section>
+ <!-- Feature -->
+ <script>
+  function performSearch() {
+    const searchQuery = document.getElementById('form1').value;
+    const url = `/showproducts?searchQuery=${searchQuery}`;
+    window.location.href = url;
+  }
+</script>
+ <%- include("../partials/footer.ejs") %>

@@ -1,0 +1,69 @@
+<body>
+
+    <%- include("../partials/header.ejs") %>
+
+    <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100">
+        <div class="container mt-1" >
+            <h1 style="text-align: center;" class="mt-4">My Orders</h1>
+            <div class="table-responsive" style="height: 70vh; overflow-y: auto;  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                <table class="table table-bordered mt-4">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Payment Method</th>
+                            <th>Total Price</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+<!-- Inside the loop where you generate rows for each order -->
+<% orders.forEach(order => { %>
+    <tr>
+        <td><%= order._id %></td>
+        <td><%= order.paymentMethod %></td>
+        <td><%= order.totalPrice %></td>
+        <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
+        <td><%= order.status %></td>
+        <td>
+            <% if (order.acceptReturn) { %>
+                <span>Order is returned</span>
+            <% } else if (order.rejectReturn) { %>
+                <span>This order can't be returned</span>
+            <% } else if (order.isReturned) { %>
+                <span>Order return request sent</span>
+            <% } else if (order.status === 'Pending' || order.status === 'Shipped') { %>
+                <form action="/cancelorder/<%= order._id %>" method="post">
+                    <textarea name="cancelReason" rows="3" cols="30" placeholder="Enter cancel reason"></textarea>
+                    <button type="submit" class="btn btn-danger">Cancel</button>
+                </form>
+            <% } else if (order.status === 'Delivered') { %>
+                <form action="/returnOrder/<%= order._id %>" method="post">
+                    <textarea name="returnReason" rows="3" cols="30" placeholder="Enter return reason"></textarea>
+                    <button type="submit" class="btn btn-info">Return</button>
+                </form>
+            <% } else if (order.status === 'Canceled') { %>
+                <span>Order Canceled</span>
+            <% } %>
+        </td>
+    </tr>
+<% }); %>
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <%- include("../partials/footer.ejs") %>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

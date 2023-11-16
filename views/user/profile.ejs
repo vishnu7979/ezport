@@ -1,0 +1,171 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<%- include("../partials/header.ejs") -%>
+
+<div class="container-fluid p-0 min-vh-100">
+  <div class="container mt-4">
+    <div class="row p-4 mb-4">
+      <div class="flex-column text-center">
+        <h3><%=user.name%></h3>
+        <p style="color: blue;" class="p-0 m-0">Email : <span><%=user.email%></span></p>
+      </div>
+
+
+
+      <div class="container col-lg-3 col-md-3 col-12 p-3 m-0"  >
+        <div class="mb-4 d-flex flex-column">
+            <h5 class="mb-3">Manage My Account</h5>
+            <a href="/profile" class="text-decoration-none text-danger">My Profile</a>
+            <a href="/changepassword" class="text-decoration-none">Edit Password</a>
+        </div>
+    
+        <div class="mb-4 d-flex flex-column">
+            <h5 class="mb-3">My Orders</h5>
+            <a href="/myorders" class="text-decoration-none">My Orders</a>
+            <a href="#" id="myReturnLink" class="text-decoration-none">My Return</a>
+        </div>
+    
+        <div class="mb-4 d-flex flex-column">
+            <h5 class="mb-3">Address</h5>
+            <a href="/displayaddress" class="text-decoration-none">My Address</a>
+        </div>
+    
+        <div class="mb-4 d-flex flex-column border-top pt-3">
+            <p style="color: red;" class="mb-3">Money Wallet: $<%= userWallet.balance %></p>
+    
+            <% if (reference) { %>
+                <h6 class="mb-3">Reference Code: <%= reference.referenceCode %></h6>
+            <% } %>
+    
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="referenceCode" placeholder="Enter reference code">
+                <button class="btn btn-primary" id="claimButton" onclick="claimReferenceCode()">Claim</button>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+      <div class="container col-lg-9 col-md-9 col-12 py-3 p-0 m-0">
+      
+
+        <div class="container order-container">
+            <h4 class="mt-4" style="text-align: center;">My Orders</h4>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-bordered mt-4">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Order ID</th>
+                             <th>Payment Method</th>
+                            <th>Total Price</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>View Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr>
+                                <td><%= order._id %></td>
+                                 
+                                <td><%= order.paymentMethod %></td>
+                                <td><%= order.totalPrice %></td>
+                                <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
+                                <td><%= order.status %></td>
+                              
+                                <td>
+                                  <a href="/orderdetails/<%= order._id %>">view</a>
+                                </td>
+
+                            </tr>
+                        <% }); %>  
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="returnModalLabel">Returned Orders</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <tr>
+            <th>Order ID</th>
+            <th>Payment Method</th>
+            <th>Total Price</th>
+            <th>Order Date</th>
+           </tr>
+          <% returnedOrders.forEach(order => { %>
+            <tr>
+              <td><%= order._id %></td>
+              <td><%= order.paymentMethod %></td>
+              <td><%= order.totalPrice %></td>
+              <td><%= new Date(order.orderDate).toLocaleDateString('en-US') %></td>
+              
+            </tr>
+          <% }); %>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to show the modal
+  function showReturnModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('returnModal'));
+    myModal.show();
+  }
+  
+  // Update the link to trigger the modal
+  document.getElementById('myReturnLink').addEventListener('click', function(event) {
+    event.preventDefault();
+    showReturnModal();
+  });
+
+</script>
+
+<script>
+  function claimReferenceCode() {
+    var referenceCode = document.getElementById('referenceCode').value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/claimReference');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        alert(response.message);
+      }else if (xhr.status === 400) {
+        var response = JSON.parse(xhr.responseText);
+        alert(response.message);
+      }else if (xhr.status === 400) {
+        var response = JSON.parse(xhr.responseText);
+        alert(response.message);
+      }
+      else {
+        alert('Error claiming reference code. Please try again later.');
+      }
+    };
+    xhr.send(JSON.stringify({ referenceCode: referenceCode }));
+  }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ 
+
+<%- include("../partials/footer.ejs") -%>

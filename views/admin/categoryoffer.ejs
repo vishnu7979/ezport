@@ -1,0 +1,67 @@
+<%- include("../partials/adminHeader.ejs") %>
+
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <%- include("../partials/adminNavbar.ejs") %>
+
+            <!-- Navbar End -->
+
+
+            <!-- Blank Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row vh-100 bg-secondary rounded align-items-center justify-content-center mx-0">
+                    <div class="col-md-8">
+                        <h1 class="text-center mb-4">Active Categories</h1>
+                        <ul class="list-group">
+                            <% activeCategories.forEach(category => { %>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <%= category.name %>
+                                    
+                                    <div class="input-group" style="max-width: 200px;">
+                                        <input type="number" class="form-control" id="percentage_<%= category._id %>" placeholder="Enter offer (%)" min="0" max="100" required>
+                                        <input type="hidden" id="categoryId_<%= category._id %>" value="<%= category._id %>">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" onclick="applyOffer('<%= category._id %>')">Apply</button>
+                                        </div>
+                                    </div>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blank End -->
+
+            <script>
+                function applyOffer(categoryId) {
+                    var percentage = document.getElementById('percentage_' + categoryId).value;
+                    var categoryIdValue = document.getElementById('categoryId_' + categoryId).value;
+        
+                    // Make an AJAX request to send the data to the backend
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/admin/applyOffer', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = function () {
+                        if (xhr.status >= 200 && xhr.status < 400) {
+                            // Success
+                            var response = JSON.parse(xhr.responseText);
+                            console.log(response);
+                        } else {
+                            // Error
+                            console.error(xhr.statusText);
+                        }
+                    };
+                    xhr.onerror = function () {
+                        console.error('Network Error');
+                    };
+                    xhr.send(JSON.stringify({ categoryId: categoryIdValue, percentage: percentage }));
+                }
+            </script>
+
+            <!-- Footer Start -->
+            <%- include("../partials/adminfooter.ejs") %>

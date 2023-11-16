@@ -1,0 +1,73 @@
+<%- include("../partials/adminHeader.ejs") %>
+
+<!-- Sidebar End -->
+
+
+<!-- Content Start -->
+<div class="content">
+    <!-- Navbar Start -->
+    <%- include("../partials/adminNavbar.ejs") %>
+
+    <!-- Navbar End -->
+
+
+    <!-- Blank Start -->
+
+    
+    <main style="margin-top: 58px;">
+        <div class="container pt-4">
+            <div class="add-category-container">
+                 
+                    <form action="/admin/addcategory" method="post" class="category-form">
+                        <h2 style="text-align: center;">Add Category</h2>
+                        <div class="form-group">
+                            <label for="categoryName">Category Name</label>
+                            <input type="text" id="categoryName" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Add Category</button>
+                        </div>
+                    </form>
+                 
+                
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- Blank End -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.querySelector('.category-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const categoryName = document.getElementById('categoryName').value;
+
+    const response = await fetch('/admin/addcategory', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: categoryName })
+    });
+
+    if (response.ok) {
+        window.location.href = '/admin/categorymanagement';
+    } else if (response.status === 400) {
+        // Display a SweetAlert
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Category already exists',
+        });
+    } else {
+        alert('An error occurred');
+    }
+});
+
+    </script>
+
+    <!-- Footer Start -->
+    <%- include("../partials/adminfooter.ejs") %>

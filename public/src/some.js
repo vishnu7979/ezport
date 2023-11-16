@@ -1,0 +1,3 @@
+function sayHai(){
+    alert('hai')
+}

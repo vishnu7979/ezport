@@ -1,0 +1,36 @@
+<%- include("../partials/adminHeader.ejs") %>
+
+<!-- Sidebar End -->
+
+
+<!-- Content Start -->
+<div class="content">
+    <!-- Navbar Start -->
+    <%- include("../partials/adminNavbar.ejs") %>
+
+    <!-- Navbar End -->
+
+
+    <!-- Blank Start -->
+    <main style="margin-top: 58px;">
+        <div class="container pt-4">
+            <div class="category-container">
+                <!-- Edit Category Form -->
+                <form action="/admin/editcategorypost/<%= category._id %>" method="post" class="category-form">
+                    <h2 class="mb-4">Edit Category</h2>
+                    <div class="form-group">
+                        <label for="categoryName">Category Name</label>
+                        <input type="text" id="categoryName" name="name" value="<%= category.name %>" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <!-- Blank End -->
+
+<!-- Bootstrap Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <!-- Footer Start -->
+    <%- include("../partials/adminfooter.ejs") %>

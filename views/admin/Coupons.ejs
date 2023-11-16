@@ -1,0 +1,47 @@
+<%- include("../partials/adminHeader.ejs") %>
+
+         <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <%- include("../partials/adminNavbar.ejs") %>
+
+
+            <!-- Blank Start -->
+           
+            
+            <div class="container">
+                <h3 style="text-align: center;">Available Coupons</h3>
+                <div class="row">
+                    <% coupons.forEach(function(coupon, index) { %>
+                        <% if (index % 3 === 0) { %>
+                            </div><div class="row">
+                        <% } %>
+                        <div class="col-sm-12 col-md-4 mt-4">
+                            <div class="bg-secondary rounded h-100 p-4">
+                                <h5 class="card-title text-center"><%= coupon.couponName %></h5>
+                                <div class="card mb-4" style="display: flex; justify-content: center; align-items: center;">
+                                    <div class="card-body">
+                                        <p class="card-text text-center">Amount: <%= coupon.couponValue %></p>
+                                        <p class="card-text text-center">Max Value: <%= coupon.maxValue %></p>
+                                        <p class="card-text text-center">Min Value: <%= coupon.minValue %></p>
+                                        <p class="card-text text-center">Expiry Date: <%= coupon.expiryDate %></p>
+                                        <a style="display: flex; justify-content: center;" href="/admin/delete-coupon/<%= coupon._id %>"  class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="mt-4" style="display: flex; justify-content: center;">
+                <a href="/admin/addCoupons"><button class="btn btn-primary">Add New Coupons</button></a>
+                </div>
+            
+            <!-- Blank End -->
+
+
+            <!-- Footer Start -->
+            <%- include("../partials/adminfooter.ejs") %>

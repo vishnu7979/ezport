@@ -1,0 +1,67 @@
+<%- include("../partials/adminHeader.ejs") %>
+
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <%- include("../partials/adminNavbar.ejs") %>
+
+            <!-- Navbar End -->
+
+
+            <!-- Blank Start -->
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="text-center">Order Details</h1>
+                    </div>
+                </div>
+        
+                <!-- Order Details -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h4>Order ID: <%= order._id %></h4>
+                        <p>Status: <%= order.status %></p>
+                        <p>Total Price: <%= order.totalPrice %></p>
+                        <p>Order Date: <%= new Date(order.orderDate).toLocaleDateString() %></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Shipping Address:</h4>
+                        <p><%= order.addressId.street %>, <%= order.addressId.city %>, <%= order.addressId.state %> - <%= order.addressId.zip %></p>
+                    </div>
+                </div>
+        
+                <!-- Products -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4>Products</h4>
+                        <div class="scrollable-div" style="max-height: 300px; overflow-y: auto;">
+                            <ul class="list-group">
+                                <% order.products.forEach(product => { %>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img style="height: 100px; width: 100px;" src="/uploads/<%= product.productId.image %>" alt="<%= product.name %>" class="img-fluid">
+                                            </div>
+                                            <div class="col-6">
+                                                <h5><%= product.productId.name %></h5>
+                                                <p>Price: <%= product.productId.price %></p>
+                                            </div>
+                                            <div class="col-3">
+                                                <p>Quantity: <%= product.quantity %></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Blank End -->
+
+
+            <!-- Footer Start -->
+            <%- include("../partials/adminfooter.ejs") %>

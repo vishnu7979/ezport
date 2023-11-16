@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <style>
+  body {
+            background-color: #fbfbfb;
+        }
+
+        @media (min-width: 991.98px) {
+            main {
+                padding-left: 240px;
+            }
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 58px 0 0;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+            width: 240px;
+            z-index: 600;
+            border-right: 3px solid #6c757d;
+            background-color: #343a40;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 0;
+            font-size: 1rem;
+        }
+
+        .list-group-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .card-link {
+            padding: 8px 16px;
+            display: block;
+            width: 100%;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .card-link:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: 0.5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        #main-navbar {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+            border-bottom: 3px solid #afc1d0;
+            background-color: #d1c1c0 !important;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-search {
+            min-width: 225px;
+        }
+
+        .navbar-search input {
+            border-radius: 25px;
+            border: 1px solid #ced4da;
+            padding: 8px 16px;
+        }
+
+        .list-group-item a {
+            background-color: rgba(0, 0, 0, 0.05);
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        table {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #FF5722;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        }
+
+        .form-group button:hover {
+            background-color: #E64A19;
+        }
+             
+        .hi{
+            padding-left: 230px;
+           }
+
+            .hey{
+                padding-left: 300px;
+            }
+        /* Additional style for the category container */
+        .category-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px; /* Adjust margin as needed */
+        }
+
+        /* Additional style for the category list items */
+        .category-list li {
+            list-style-type: none;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Additional style for action buttons */
+        .category-list li .action-buttons {
+            display: flex;
+        }
+
+        /* Additional style for action buttons */
+        .category-list li button {
+            background-color: #FF5722;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+         .category-list li button:hover {
+            background-color: #3205fb;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        table {
+            max-width: 1000px; /* Adjust as needed */
+            width: 100%;
+        }
+
+        .hi{
+            padding-left: 300px;
+            padding-top: 100px;
+        }
+      
+        
+
+        /* Make create button blue */
+        .create-button button {
+            background-color: #2196F3;
+        }
+
+        
+        .category-container {
+            
+            margin-top: 20px; 
+            background-color: #a5aab1; 
+        }
+
+        .create-button button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-3 mt-4">
+                <a class="list-group-item list-group-item-action py-2 ripple" aria-current="true"
+                    data-mdb-toggle="collapse" href="/admin/dashboard" aria-expanded="true"
+                    aria-controls="collapseExample1">
+                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Admin Dashboard</span>
+                </a>
+                <ul id="collapseExample1" class="collapse show list-group list-group-flush">
+                    <li class="list-group-item py-1">
+                        <div class="card border-dark mb-3">
+                            <a href="/admin/userDetails" class="card-link">User Details</a>
+                        </div>
+                    </li>
+                    <li class="list-group-item py-1">
+                        <div class="card border-dark mb-3">
+                            <a href="/admin/addproduct" class="card-link">Add Product</a>
+                        </div>
+                    </li>
+                    <li class="list-group-item py-1">
+                        <div class="card border-dark mb-3">
+                            <a href="/admin/showproducts" class="card-link">Show Products</a>
+                        </div>
+                    </li>
+                    <li class="list-group-item py-1">
+                        <div class="card border-dark mb-3">
+                            <a href="/admin/categoryManagement" class="card-link">Category Management</a>
+                        </div>
+                    </li>
+                    <li class="list-group-item py-1">
+                        <div class="card border-dark mb-3">
+                            <a href="/admin/OrderManagement" class="card-link">Order Management</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="/admin/dashboard">Admin Dashboard</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="d-none d-lg-flex input-group w-auto my-auto ms-auto navbar-search">
+                    <input autocomplete="off" type="search" class="form-control rounded"
+                        placeholder='Search Here' />
+                 </form>
+            </div>
+        </div>
+    </nav>x`
+    <!-- Category Management Section -->
+    <main style="margin-top: 58px;">
+        <div class="container pt-4">
+            <div class="hi"> 
+                <div class="category-container">
+                    <h4>Category Management</h4>
+    
+                    <ul class="category-list">
+                        <% categories.forEach(category => { %>
+                            <% if (!category.isDeleted) { %>    
+                                <li>
+                                    <span><%= category.name %></span>
+                                    <div class="action-buttons">
+                                        <a href="/admin/editcategory/<%= category.id %>"><button style="background-color: #0bc711;">Edit</button></a>
+                                        <button style="background-color: #ff0000;" onclick="confirmDelete('<%= category.id %>')">Delete</button>
+
+                                    </div>
+                                </li>
+                            <% } %>
+                        <% }); %>
+                    </ul>
+    
+                    <div class="create-button">
+                        <a href="/admin/addcategoryform"><button>Create New</button></a>
+                        <a href="/admin/sendCategoryOffer"><button>Add new Offer</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function confirmDelete(categoryId) {
+            swal({
+                title: "Are you sure?",
+                text: "If you delete the category, it will also delete all the products belonging to this category.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    // If user clicks "OK", redirect to the delete category route
+                    window.location.href = `/admin/deletecategory/${categoryId}`;
+                }
+            });
+        }
+        </script>
+ 
+</body>
+</html>
+

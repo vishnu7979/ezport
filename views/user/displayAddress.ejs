@@ -1,0 +1,53 @@
+<%- include("../partials/header.ejs") %>
+
+<div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100" style="margin-top: 5%;">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="container col-lg-8 rounded" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+            <h1 class="text-center text-dark">Addresses</h1>
+
+            <div class="button-container text-center mb-3">
+                <a href="/address" class="btn btn-success">Add New Address</a>
+            </div>
+
+            <div class="address-container" style="max-height: 400px; overflow-y: auto;">
+                <% if (addresses.length > 0) { %>
+                    <% addresses.forEach(address => { %>
+                        <div class="address-card mb-4 p-4 border rounded">
+                            <strong class="text-dark">Name:</strong> <%= address.userName %><br>
+                            <strong class="text-dark">Street:</strong> <%= address.street %><br>
+                            <strong class="text-dark">City:</strong> <%= address.city %><br>
+                            <strong class="text-dark">State:</strong> <%= address.state %><br>
+                            <strong class="text-dark">Pin Code:</strong> <%= address.zip %><br>
+                            <div class="button-container text-center mt-3">
+                                <button class="btn btn-primary edit-address" data-id="<%= address._id %>">
+                                    <i class="fas fa-edit"></i> Edit Address
+                                </button>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <h2 class="text-center">No Address Found</h2>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("../partials/footer.ejs") %>
+
+<!-- Bootstrap JS (Place it at the end for better performance) -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const editButtons = document.querySelectorAll(".edit-address");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const addressId = this.dataset.id;
+                window.location.href = `/editaddress/${addressId}`;
+            });
+        });
+    });
+</script>
+</body>
+</html>
