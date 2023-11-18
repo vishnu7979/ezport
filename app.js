@@ -6,11 +6,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 
 const port=9999;
 
-require('dotenv').config();
 
 const collection=require("../mini_project/models/user")
 

@@ -1,34 +1,40 @@
-<!-- wallethistory.ejs -->
+<!-- walletHistory.ejs -->
 <%- include("../partials/header.ejs") -%>
 
-<div class="container">
-  <h4 class="mt-4" style="text-align: center;">Wallet History</h4>
-  <div class="table-responsive">
-    <table class="table table-bordered mt-4">
-      <thead class="thead-light">
-        <tr>
-          <th>Date</th>
-          <th>Type</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% transactions.forEach(transaction => { %>
-          <tr>
-            <td><%= new Date() %></td>
-            <td><%= transaction.type %></td>
-            <td>
-              <% if (transaction.type === 'Credit') { %>
-                <span style="color: green;">+<%= transaction.amount %></span>
-              <% } else { %>
-                <span style="color: red;"><%= transaction.amount %></span>
-              <% } %>
-            </td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </div>
+<div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100">
+    <div class="container mt-1">
+        <h1 style="text-align: center;" class="mt-4">Wallet History</h1>
+        <div class="table-responsive" style="height: 70vh; overflow-y: auto;  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+            <table class="table table-bordered mt-4">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(transaction => { %>
+                        <tr>
+                            <td><%= new Date(transaction.date).toLocaleDateString() %></td>
+                            <td><%= transaction.type %></td>
+                            <td>
+                                <% if (transaction.type === 'Credit') { %>
+                                    <span style="color: green;">+<%= transaction.amount %></span>
+                                <% } else { %>
+                                    <span style="color: red;"><%= transaction.amount %></span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
- 
+<%- include("../partials/footer.ejs") %>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
