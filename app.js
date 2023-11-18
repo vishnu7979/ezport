@@ -12,7 +12,7 @@ require('dotenv').config();
 const port=9999;
 
 
-const collection=require("../mini_project/models/user")
+const collection=require("./models/user")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

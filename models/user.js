@@ -10,7 +10,7 @@ mongoose.connect(atlas_URL)
 
  
 const LogInSchema=new mongoose.Schema({
-    name:{
+    name:{ 
         type:String,
         required:true
     },
