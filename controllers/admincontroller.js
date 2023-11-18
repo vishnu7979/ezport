@@ -863,6 +863,10 @@ const addBanner= (req, res) => {
     }
   };
 
+  const getError = (req, res) => {
+    res.render('admin/404')
+  }
+
  
 
 module.exports = {
@@ -901,7 +905,7 @@ module.exports = {
     getbanner,
     addBanner,
     addBannerPost,
-    deleteBanner
+    deleteBanner,
+    getError
     
-
 }

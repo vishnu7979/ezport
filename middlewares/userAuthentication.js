@@ -2,11 +2,12 @@ const collection = require("../models/user")
 
 const userauthentication = async (req, res, next) => {
     if (req.session.user) {
-       console.log("hello session")
+       console.log("inside userAuthentication")
 
         next()
     } else {
-        
+        console.log("not inside userAuthentication")
+
         res.redirect('/login');
     }
 };
@@ -18,11 +19,13 @@ const isBlock =async(req,res,next)=>
 
         if (user.isblocked) 
         {
-            console.log("hello");
+            console.log("not inside userAuthentication")
             res.redirect('/login');
         } 
         else 
         {
+            console.log("inside userAuthentication block")
+
              next();
         }
     }catch(error){

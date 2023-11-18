@@ -9,7 +9,7 @@
   </div>
 
    <div class="row mt-4"  style="display: flex; justify-content: space-around;">
-    <div class="col-6" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; width: 450px; margin-right: 10px;"  >
+    <div class="col-6"    >
       <h4>Order ID: <%= order._id %></h4>
       <p>Status: <%= order.status %></p>
       <p>Total Price: <%= order.totalPrice %></p>
@@ -17,7 +17,7 @@
       <h6>Grand Total : <%= order.grantTotal %></h6>
       <p>Order Date: <%= new Date(order.orderDate).toLocaleDateString() %></p>  
     </div>
-    <div class="col-6" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; width: 350px; margin-right: 10px;" >
+    <div class="col-6"   >
       <h4>Shipping Address:</h4>
       <p><%= order.addressId.street %>, <%= order.addressId.city %>, <%= order.addressId.state %> - <%= order.addressId.zip %></p>
     </div>
@@ -213,7 +213,7 @@ easyinvoice.createInvoice(data, async function (result) {
         "products": orderData.products.map(product => ({
           "quantity": product.quantity,
           "description": product.productId.name,
-          "tax-rate": 6, // You may need to fetch tax information from your database
+          "tax-rate": 0, // You may need to fetch tax information from your database
           "price": product.productId.price
         })),
         "bottom-notice": "Kindly pay your invoice within 15 days.",
@@ -229,7 +229,7 @@ easyinvoice.createInvoice(data, async function (result) {
       "orientation": "landscape", // po or landscape, defaults to portrait
   },
   "translate": {
-      "invoice": "e-ZPORT",  // Default to 'INVOICE'
+      "invoice": "agorts",  // Default to 'INVOICE'
       "number": "Order_ID", // Defaults to 'Number'
       "date": "Date", // Default to 'Date'
       "due-date": "Due-Date", // Defaults to 'Due Date'

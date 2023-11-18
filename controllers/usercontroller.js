@@ -139,42 +139,7 @@ const signuppost = async (req, res) => {
   }
 };
 
-// const loginpost = async (req, res) => {
-//   try {
-//     const { email } = req.body;
-//     const check = await collection.findOne({ email: req.body.email });
-//     const result = await bcrypt.compare(req.body.password,check.password)
-//     if (check) {
-//       if (req.body.email===check.email&& result) {
-//         const otp = generateOTP();
-//         console.log(otp);
-//         if (check.isblocked) {
-//           res.render("user/login", { error:"you are blocked by admin !!!" });
-//         }
-//         //might
-//         // req.session.userId = user._id;
-//         req.session.user = req.body.email;
-//         req.session.otp = otp; // Store OTP in session
-//         req.session.requestedOTP = true;
-//         // Send the OTP to the user (you may use a notification library or email)
-//         await sendOTPByEmail(email, otp);
-//         res.render("user/otp", {
-//           msg: "Please enter the OTP sent to your email",
-//         });
-//       } else {
-//         res.render("user/login", { error: "Wrong Password !!!" });
-//       }
-//     } else {
-//       res.render("user/login", { error1: "User not found !!!" });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     console.error(error.message);
-
-//     res.send("An error occurred while processing your request.");
-//   }
-
-// };
+ 
 
 const loginpost = async (req, res) => {
   try {
@@ -472,7 +437,6 @@ const showProducts = async (req, res) => {
 const addToCart = async (req, res) => {
   if (req.session.user) {
     const { productId } = req.body;
-
     const user = await collection.findOne({ email: req.session.user });
     try {
       const existingCartItem = await CartItem.findOne({
@@ -1285,6 +1249,15 @@ const shop = (req, res) => {
 
 
 
+// function for generating oderId with prefix "ODR"
+function generateOrderId() {
+  const prefix = 'ODR_';
+  const randomNumbers = Math.floor(1000 + Math.random() * 9000); // Generate a random 4-digit number
+  const orderId = `${prefix}${randomNumbers}`;
+  return orderId;
+}
+
+
 let order;
 
 const processOrder = async (req, res) => {
@@ -1310,7 +1283,12 @@ const processOrder = async (req, res) => {
       quantity: item.quantity,
     }));
 
+
+    const orderId = generateOrderId()
+    console.log("the coustome orderId is :",orderId);
+    
     order = new Order({
+      orderId,
       userId,
       paymentMethod,
       addressId: address,
@@ -1327,7 +1305,7 @@ const processOrder = async (req, res) => {
       });
 
       var options = {
-        amount: Math.round(totalPrice * 100), // amount in paise (smallest currency unit)
+        amount: Math.round(grantTotal * 100), // amount in paise (smallest currency unit)
         currency: "INR",
         receipt: "order_rcptid_11",
       };
