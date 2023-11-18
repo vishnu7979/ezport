@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
  const atlas_URL=process.env.atlas_URL
-mongoose.connect('')
+mongoose.connect(atlas_URL)
 .then(()=>{
    console.log("mongodb connected !!!"); 
 })
