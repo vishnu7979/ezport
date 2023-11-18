@@ -1,0 +1,28 @@
+<!-- addBanner.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Banner</title>
+</head>
+<body>
+
+  <h1>Add New Banner</h1>
+
+  <form action="/admin/addBanner" method="post" enctype="multipart/form-data">
+    <!-- Customize the form fields based on your banner model -->
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>

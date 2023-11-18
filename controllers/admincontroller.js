@@ -4,14 +4,7 @@ const categoryCollection = require('../models/category');
 const Order = require('../models/order');
 const Wallet = require('../models/wallet');
 const coupon = require("../models/coupon")
- 
-
-
-
-
-
-
-
+const banner = require("../models/banner")
 
 
 const login = (req, res) => {
@@ -364,35 +357,7 @@ const editProduct = async (req, res) => {
 };
 
 
-
-
-// const updateProduct = async (req, res) => {
-//     const productId = req.params.id;
-//     const { name, description, price, category,offer } = req.body;
-//     const image = req.files.image[0] ? req.files.image[0].filename : '';
-//     const additionalImages = req.files.additionalImages ? req.files.additionalImages.map(file => file.filename) : [];
-
-//     try {
-//         const updatedProduct = await Product.findByIdAndUpdate(productId, {
-//             name,
-//             description,
-//             price,
-//             category,
-//             image,
-//             additionalImages,
-//             offer
-//         }, { new: true });
-
-//         if (!updatedProduct) {
-//             return res.status(404).send('Product not found');
-//         }
-
-//         res.redirect('/admin/showproducts');
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// };
+ 
 
 const updateProduct = async (req, res) => {
     const productId = req.params.id;
@@ -513,6 +478,14 @@ const editCategoryPost = async (req, res) => {
     const newName = req.body.name;
 
     try {
+        // Check if the category with the new name already exists (case-insensitive)
+        const existingCategory = await categoryCollection.findOne({ name: { $regex: new RegExp('^' + newName + '$', 'i') } });
+
+        if (existingCategory && existingCategory._id.toString() !== categoryId) {
+            // If the category with the new name already exists (excluding the current category being edited)
+            return res.status(400).send('Category already exists');
+        }
+
         const category = await categoryCollection.findByIdAndUpdate(categoryId, { name: newName }, { new: true });
 
         if (!category) {
@@ -524,8 +497,8 @@ const editCategoryPost = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-
 };
+
 
 const toggleProductAvailability = async (req, res) => {
     try {
@@ -567,37 +540,7 @@ console.log("insideom");
     }
 };
 
- 
- 
-
-
-// const updateOrderStatus = async(req,res)=>{
-//     try{
-//         const orderId = req.params.orderId;
-//         const newStatus = req.params.newStatus;
-        
-    
-//         const updatedOrder = await Order.findByIdAndUpdate(
-//             orderId,
-//             { status: newStatus },
-//             { new: true } // Set to true to return the updated order
-//         );
-    
-//         if (updatedOrder) {
-//             // Order status updated successfully
-//             res.json({ success: true });
-//         } else {
-//             // Order not found or status update failed
-//             res.json({ success: false });
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ success: false });
-//     }
-      
-//     }
-
-
+  
   
 const updateOrderStatus = async (req, res) => {
     try {
@@ -642,48 +585,7 @@ const updateOrderStatus = async (req, res) => {
 
 
 
-
-// const  acceptreturn = async (req, res) => {
-//     const orderId = req.body.orderId;
-//     console.log(orderId);
-
-//     try {
-//          const order = await Order.findOne({ _id: orderId });
-
-//         if (!order) {
-//             return res.status(404).json({ success: false, message: 'Order not found' });
-//         }
-
-//          const user = await collection.findOne({ email: req.session.user }).populate('wallet');
-//          console.log(user);
-
-//         const WWallet=await Wallet.findOne({ _id: user.wallet.id  }) 
-//         console.log(WWallet.balance);
-
  
-//         if (!user) {
-//             return res.status(401).json({ success: false, message: 'User not authenticated' });
-//         }
-
-//         console.log(order.acceptReturn);
-//         order.set({ acceptReturn: true });
-//         await order.save();
-
-
-//         const tprice = order.totalPrice; 
-//         const variable = WWallet.balance += tprice;
-//         console.log(variable);
-//         await user.save();
-//         await WWallet.save();
-//          console.log(tprice);
-
-//       res.redirect('/admin/OrderManagement')
-//     } catch (error) {
-//         console.error('Error:', error);
-//         return res.status(500).json({ success: false, message: 'Internal server error' });
-//     }
-// }
-
 const acceptreturn = async (req, res) => {
     const orderId = req.body.orderId;
     console.log(orderId);
@@ -851,7 +753,7 @@ const viewdetails = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
     
-};
+};  
 
 const applyOffer = async (req, res) => {
     const { categoryId, percentage } = req.body;
@@ -905,7 +807,62 @@ const charts = async (req, res) => {
 };
 
  
+
+const getbanner = async (req, res) => {
+  try {
+     
+    // const bannerData = await banner.find();
+    const bannerData = await banner.find({ isDeleted: false });
+
+
+    // Render the banners page with bannerData
+    res.render('admin/banner', { bannerData });
+  } catch (err) {
+    console.error("Error is ", err);
+    // Render the banners page with an error message or redirect to an error page
+    res.render('error', { errorMessage: 'An error occurred' });
+  }
+};
+
+const addBanner= (req, res) => {
+    res.render('admin/addBanner');
+  };
+
+
+
+  const addBannerPost = async (req, res) => {
+    const { name, description } = req.body;
+  console.log(name,description);
+    try {
+      const newbanner = new banner({
+        name,
+        description,
+        image: req.file ? req.file.filename : '',  
+      });
+  
+      await newbanner.save();
+      res.redirect('/admin/banners');  
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+  
  
+  const deleteBanner = async (req, res) => {
+    const bannerId = req.params.id;
+  
+    try {
+      // Find the banner by ID and update the isDeleted field to true
+      await banner.findByIdAndUpdate(bannerId, { isDeleted: true });
+      
+      res.redirect('/admin/banners'); // Redirect to the banners page after deletion
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
  
 
 module.exports = {
@@ -940,7 +897,11 @@ module.exports = {
     applyOffer,
     deleteCoupon,
     charts,
-    chart
+    chart,
+    getbanner,
+    addBanner,
+    addBannerPost,
+    deleteBanner
     
 
 }

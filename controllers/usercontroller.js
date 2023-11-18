@@ -1,5 +1,6 @@
 const collection = require("../models/user");
 const Product = require("../models/product");
+const banner = require("../models/banner");
 const categoryCollection = require("../models/category");
 const CartItem = require("../models/cart");
 const Address = require("../models/address");
@@ -10,7 +11,7 @@ const coupon = require("../models/coupon");
 const Reference = require("../models/Reference");
 const bcrypt = require("bcrypt");
 const Razorpay = require("razorpay");
-
+const mongoose=require('mongoose')
 const secret_Id = "rzp_test_waFdN3ZvExWNh1";
 const secret_Key = "b42Dwol4Dbl9W0tbplVQuqH8";
 
@@ -21,8 +22,10 @@ const landing = async (req, res) => {
   const isLoggedIn = !!msg1; // Check if user is logged in
   console.log("this is landing page");
   console.log(msg1);
+  // const banners = await banner.find();
+  const banners = await banner.find({ isDeleted: false });
   const product = await Product.find();
-  res.render("user/landing", { msg1, isLoggedIn, product });
+  res.render("user/landing", { msg1, isLoggedIn, product,banners });
 };
 
 const login = (req, res) => {
@@ -1010,18 +1013,32 @@ const cancelOrder = async (req, res) => {
       const totalPrice = order.totalPrice;
 
       if (user.wallet) {
-        if (order.paymentMethod !== "cashOnDelivery") {
+        if (order.paymentMethod !== 'cashOnDelivery') {
+          // Add the refunded amount to the wallet transactions
+          user.wallet.transactions.push({
+            amount: totalPrice,
+            type: 'Credit',
+          });
+
+          // Update the wallet balance
           user.wallet.balance += totalPrice;
+          await user.wallet.save();
         }
-        await user.wallet.save();
       } else {
         const newWallet = new Wallet({ balance: totalPrice });
+        // Add the refunded amount to the wallet transactions
+        newWallet.transactions.push({
+          amount: totalPrice,
+          type: 'Credit',
+        });
+
         await newWallet.save();
         user.wallet = newWallet;
       }
 
       await user.save();
     }
+
 
     res.redirect("/myorders");
   } catch (err) {
@@ -1366,16 +1383,23 @@ const processOrder = async (req, res) => {
     
     else if (paymentMethod === "wallet") {
 
-      console.log("hello inside wallet");
-      console.log(order.grantTotal);
-      console.log(user.wallet.balance);
-
+      console.log('hello inside wallet');
+    
       if (order.grantTotal <= user.wallet.balance) {
-        console.log("inside if");
         await order.save();
-
+        const transactionAmount = -grantTotal; // Debit from the wallet
+        const transactionType = 'Debit';
+    
+        // Update the wallet balance
         user.wallet.balance -= grantTotal;
-
+    
+        // Add a new transaction to the 'transactions' array
+        user.wallet.transactions.push({
+          amount: transactionAmount,
+          type: transactionType,
+        });
+    
+        // Save the changes to the wallet
         await user.wallet.save();
 
         const cartItems = await CartItem.find({ userId: user._id }).populate(
@@ -1524,6 +1548,68 @@ const applyCoupon = async (req, res) => {
 
 
 
+// const claimReferenceCode = async (req, res) => {
+//   try {
+//     const { referenceCode } = req.body;
+//     const reference = await Reference.findOne({ referenceCode });
+
+//     if (!reference) {
+//       return res.status(400).json({ message: "Invalid reference code" });
+//     }
+
+//     const user = await collection
+//       .findOne({ email: req.session.user })
+//       .populate("wallet");
+
+//     if (!user) {
+//       return res.status(500).json({ message: "Internal Server Error" });
+//     }
+
+//     // Check if the reference code has already been used by the current user
+//     if (reference.usedBy.includes(user._id)) {
+//       return res.status(400).json({ message: "Reference code already used" });
+//     }
+
+//     // Mark the reference code as used by the current user
+//     reference.usedBy.push(user._id);
+//     await reference.save();
+
+//     // Increase wallet balances
+//     if (user.wallet) {
+//       user.wallet.balance += 100; // Increase user's wallet by 100 rupees
+//       await user.wallet.save();
+//     } else {
+//       const newWallet = new Wallet({ balance: 100 });
+//       await newWallet.save();
+//       user.wallet = newWallet;
+//     }
+
+//     // Increase session user's wallet balance
+//     const referenceuser = await collection
+//       .findById(reference.userId)
+//       .populate("wallet");
+
+//     if (referenceuser.wallet) {
+//       referenceuser.wallet.balance += 100; // Increase user's wallet by 100 rupees
+//       await referenceuser.wallet.save();
+//     } else {
+//       const newWallet = new Wallet({ balance: 100 });
+//       await newWallet.save();
+//       referenceuser.wallet = newWallet;
+//     }
+
+//     await user.save();
+
+//     return res
+//       .status(200)
+//       .json({ message: "Reference code claimed successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
+
 const claimReferenceCode = async (req, res) => {
   try {
     const { referenceCode } = req.body;
@@ -1552,10 +1638,22 @@ const claimReferenceCode = async (req, res) => {
 
     // Increase wallet balances
     if (user.wallet) {
+      // Add the credited amount to the wallet transactions
+      user.wallet.transactions.push({
+        amount: 100,
+        type: 'Credit',
+      });
+
       user.wallet.balance += 100; // Increase user's wallet by 100 rupees
       await user.wallet.save();
     } else {
       const newWallet = new Wallet({ balance: 100 });
+      // Add the credited amount to the wallet transactions
+      newWallet.transactions.push({
+        amount: 100,
+        type: 'Credit',
+      });
+
       await newWallet.save();
       user.wallet = newWallet;
     }
@@ -1566,10 +1664,22 @@ const claimReferenceCode = async (req, res) => {
       .populate("wallet");
 
     if (referenceuser.wallet) {
+      // Add the credited amount to the wallet transactions
+      referenceuser.wallet.transactions.push({
+        amount: 100,
+        type: 'Credit',
+      });
+
       referenceuser.wallet.balance += 100; // Increase user's wallet by 100 rupees
       await referenceuser.wallet.save();
     } else {
       const newWallet = new Wallet({ balance: 100 });
+      // Add the credited amount to the wallet transactions
+      newWallet.transactions.push({
+        amount: 100,
+        type: 'Credit',
+      });
+
       await newWallet.save();
       referenceuser.wallet = newWallet;
     }
@@ -1584,6 +1694,7 @@ const claimReferenceCode = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 const downloadInvoice=async (req, res) => {
   try {
@@ -1605,85 +1716,7 @@ const downloadInvoice=async (req, res) => {
 };
 
 
-// const filterProducts = async (req, res) => {
-//   try {
-//     const selectedCategory = req.query.category;
-
-//     // Query products based on the selected category
-//     const filteredProducts = await Product.find({
-//       isDeleted: { $in: [false, null] },
-//       category: selectedCategory,
-//     }).limit(6); // Limit the number of products per page, adjust as needed
-
-//     // Render the product partial and send it back to the client
-//     res.render('partials/productPartial', { products: filteredProducts }, (err, html) => {
-//       if (err) {
-//         console.error('Error rendering product partial:', err);
-//         res.status(500).send('Internal Server Error');
-//       } else {
-//         res.send(html);
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error filtering products:', error);
-//     res.status(500).send('Internal Server Error');
-//   }
-// };
-
-
-// const filterProducts = async (req, res) => {
-//   try {
-//     const selectedCategory = req.query.category;
-//     const searchQuery = req.query.searchQuery;
-//     const page = req.query.page || 1;
-//     const itemsPerPage = 6;
-
-//     let filter = {
-//       isDeleted: { $in: [false, null] },
-//     };
-
-//     if (selectedCategory) {
-//       filter.category = selectedCategory;
-//     }
-
-//     if (searchQuery) {
-//       filter.$or = [
-//         { name: { $regex: searchQuery, $options: 'i' } },
-//         { category: { $regex: searchQuery, $options: 'i' } },
-//       ];
-//     }
-
-//     const totalProducts = await Product.countDocuments(filter);
-//     const totalPages = Math.ceil(totalProducts / itemsPerPage);
-
-//     const skip = (page - 1) * itemsPerPage;
-
-//     const filteredProducts = await Product.find(filter)
-//       .skip(skip)
-//       .limit(itemsPerPage);
-
-//     // Render the product partial and send it back to the client
-//     res.render('partials/productPartial', { products: filteredProducts }, (err, productHtml) => {
-//       if (err) {
-//         console.error('Error rendering product partial:', err);
-//         res.status(500).send('Internal Server Error');
-//       } else {
-//         // Render the pagination partial and send it back to the client
-//         res.render('partials/paginationPartial', { page, totalPages }, (err, paginationHtml) => {
-//           if (err) {
-//             console.error('Error rendering pagination partial:', err);
-//             res.status(500).send('Internal Server Error');
-//           } else {
-//             res.json({ products: productHtml, pagination: paginationHtml });
-//           }
-//         });
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error filtering products:', error);
-//     res.status(500).send('Internal Server Error');
-//   }
-// };
+ 
 
 const filterProducts = async (req, res) => {
   try {
@@ -1761,7 +1794,63 @@ const filterProducts = async (req, res) => {
 
 
 
+const wallethistory = async (req, res) => {
+  if (req.session.user) {
+    try {
+      const userEmail = req.session.user;
 
+      // Fetch the user ID based on the email
+      const user = await collection.findOne({ email: userEmail }).populate('wallet');
+      if (!user) {
+        return res.render('error');
+      }
+
+      const wallet = user.wallet;
+
+      // Fetch wallet transactions using aggregation
+      const walletData = await Wallet.aggregate([
+        {
+          $match: { _id: new mongoose.Types.ObjectId(wallet._id) }
+        },
+        {
+          $unwind: '$transactions'
+        },
+        {
+          $sort: { 'transactions.date': -1 } // Sort by date in descending order
+        },
+        {
+          $limit: 10 // Limit to the most recently made ten transactions
+        },
+        {
+          $project: {
+            date: '$transactions.date',
+            amount: '$transactions.amount',
+            type: {
+              $cond: {
+                if: { $gt: ['$transactions.amount', 0] },
+                then: 'Credit',
+                else: 'Debit'
+              }
+            }
+          }
+        }
+      ]);
+
+      const transactions = walletData.map(transaction => ({
+        date: transaction.date,
+        amount: transaction.amount,
+        type: transaction.type
+      }));
+
+      res.render('user/walletHistory', { transactions });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  } else {
+    res.redirect('/login');
+  }
+};
 
 module.exports = {
   landing,
@@ -1814,5 +1903,6 @@ module.exports = {
   claimReferenceCode,
   saveOrder,
   downloadInvoice,
-  filterProducts
+  filterProducts,
+  wallethistory
 };

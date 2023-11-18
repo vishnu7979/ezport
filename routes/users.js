@@ -74,7 +74,7 @@ router.get('/downloadInvoice/:orderId',usercontroller.downloadInvoice)
  
 router.get('/filterproducts', usercontroller.filterProducts);
 
-
+router.get('/wallethistory',usercontroller.wallethistory)
 
 
 

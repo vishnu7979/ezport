@@ -25,6 +25,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
 rel="stylesheet"
 />
 
+
+<!-- Bootstrap JS dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
 </head>
   <!--Main Navigation-->
 <header>
@@ -152,7 +161,10 @@ rel="stylesheet"
    </nav>
    <!-- Navbar -->
    <!-- Jumbotron -->
-   <div class="bg-primary text-white py-5">
+
+
+
+   <!-- <div class="bg-primary text-white py-5">
      <div class="container py-5">
        <h1>
          Best products & <br />
@@ -168,7 +180,40 @@ rel="stylesheet"
        <a href="/user/products"><span class="pt-1">Purchase now</span></a>
       </button>
      </div>
-   </div>
+   </div> -->
+
+
+   
+   
+   <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <% if (banners && banners.length > 0) { %>
+        <% banners.forEach((banner, index) => { %>
+          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <img src="/uploads/<%= banner.image %>" class="d-block w-100" alt="<%= banner.name %>" style="max-height: 300px; object-fit: cover">
+          </div>
+        <% }); %>
+      <% } else { %>
+        <!-- Default carousel item in case there are no banners -->
+        <div class="carousel-item active">
+          <img src="/img/default-banner.avif" class="d-block w-100" alt="Default Banner" style="max-height: 300px; object-fit: cover;">
+        </div>
+      <% } %>
+    </div>
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  
+
+
+
    <!-- Jumbotron -->
  </header>
  <!-- Products -->

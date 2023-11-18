@@ -2,14 +2,12 @@
 
 <!-- Sidebar End -->
 
-
 <!-- Content Start -->
 <div class="content">
     <!-- Navbar Start -->
     <%- include("../partials/adminNavbar.ejs") %>
 
     <!-- Navbar End -->
-
 
     <!-- Blank Start -->
     <main style="margin-top: 58px;">
@@ -29,8 +27,47 @@
     </main>
     <!-- Blank End -->
 
-<!-- Bootstrap Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <!-- SweetAlert Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- SweetAlert Integration -->
+    <script>
+  document.querySelector('.category-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const categoryName = document.getElementById('categoryName').value;
+
+    const response = await fetch(`/admin/editcategorypost/<%= category._id %>`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: categoryName })
+    });
+
+    if (response.ok) {
+        window.location.href = '/admin/categorymanagement';
+    } else if (response.status === 400) {
+        // Display a SweetAlert for category existence error
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Category already exists',
+        });
+    } else if (response.status === 404) {
+        // Display a SweetAlert for category not found error
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Category not found',
+        });
+    } else {
+        // Display a generic error alert
+        alert('An error occurred');
+    }
+});
+
+    </script>
     <!-- Footer Start -->
     <%- include("../partials/adminfooter.ejs") %>

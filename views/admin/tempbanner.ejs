@@ -1,0 +1,33 @@
+<!-- banner.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banners</title>
+</head>
+<body>
+
+  <% if (bannerData && bannerData.length > 0) { %>
+    <!-- Display banners if there is data -->
+    <h1>Banners</h1>
+    <ul>
+      <% bannerData.forEach(banner => { %>
+        <li>
+          <h2><%= banner.name %></h2>
+          <img src="/uploads/<%= banner.image %>" alt="<%= banner.name %> Image" width="200">
+          <p><%= banner.description %></p>
+          <form action="/admin/deleteBanner/<%= banner._id %>" method="post">
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <!-- Display a message and "Add New Banner" button if no data -->
+    <h1>No Banners</h1>
+  <% } %>
+  <a href="/admin/addBanner"><button>Add New Banner</button></a>
+
+</body>
+</html>

@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
+const banner = require('../models/banner');
 const admincontroller=require("../controllers/admincontroller")
 
 
@@ -57,9 +57,7 @@ router.post("/updateOrderStatus/:orderId/:newStatus",admincontroller.updateOrder
 router.post('/acceptreturn',admincontroller.acceptreturn) 
 router.post('/rejectreturn',admincontroller.rejectreturn) 
 router.get('/sendCategoryOffer', admincontroller.sendCategoryOffer);
-
-
-
+ 
 router.get("/viewdetails/:orderId", admincontroller.viewdetails);
 router.get("/coupons", admincontroller.getCoupon);
 router.get("/addCoupons",admincontroller.getaddCoupon)
@@ -67,15 +65,14 @@ router.post("/addCoupons",admincontroller.addCoupon)
 router.get('/delete-coupon/:couponId', admincontroller.deleteCoupon);
 router.post('/applyOffer', admincontroller.applyOffer);
 router.get('/charts', admincontroller.charts);
+router.get('/banners', admincontroller.getbanner);
+router.get('/addBanner', admincontroller.addBanner);
+router.post('/addBanner', upload.single('image'), admincontroller.addBannerPost);
+router.post('/deleteBanner/:id', admincontroller.deleteBanner); // Add this line
+
  
 
-
-
-
-
-
-
-
+ 
 
 module.exports = router;
 

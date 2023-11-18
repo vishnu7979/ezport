@@ -1,0 +1,34 @@
+<!-- wallethistory.ejs -->
+<%- include("../partials/header.ejs") -%>
+
+<div class="container">
+  <h4 class="mt-4" style="text-align: center;">Wallet History</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered mt-4">
+      <thead class="thead-light">
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% transactions.forEach(transaction => { %>
+          <tr>
+            <td><%= new Date() %></td>
+            <td><%= transaction.type %></td>
+            <td>
+              <% if (transaction.type === 'Credit') { %>
+                <span style="color: green;">+<%= transaction.amount %></span>
+              <% } else { %>
+                <span style="color: red;"><%= transaction.amount %></span>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+ 

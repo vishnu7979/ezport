@@ -14,16 +14,15 @@
           style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;">
 
 
+
           <!-- Checkout -->
           <div class="card shadow-0 border">
             <div class="p-4">
               <h3 class="card-title mb-3">Select Your Address</h3>
-              <div class="row">
-
-              </div>
+               
               <div class="address-container d-flex flex-nowrap overflow-auto" style="white-space: nowrap;">
-                <% if (address.length> 0) { %>
-                  <% address.forEach(address=> { %>
+                <% if (address.length > 0) { %>
+                  <% address.forEach(address => { %>
                     <div class="address-card p-3 border rounded me-3" style="width: 250px; height: 200px;">
                       <strong>House Name:</strong>
                       <%= address.houseName %><br>
@@ -35,19 +34,13 @@
                             <%= address.state %><br>
                               <strong>Pin Code:</strong>
                               <%= address.zip %><br>
-                                <div class="button-container mt-3"
-                                  style="display: flex; align-items: center; justify-content: space-evenly;">
-                                  <button class="btn btn-primary edit-address" data-address-id="<%= address._id %>">
-                                    Select
-                                  </button>
-
-                                </div>
-                    </div>
-                    <% }); %>
-                      <% } else { %>
-                        <h6 style="color: red;">No Address Found*</h6>
+                              <input type="radio" class="select-address" name="selectedAddress" data-address-id="<%= address._id %>">
+                            </div>
+                          <% }); %>
+                        <% } else { %>
+                          <h6 style="color: red;">No Address Found*</h6>
                         <% } %>
-              </div>
+                      </div>
 
 
             </div>
@@ -107,9 +100,7 @@
               </form>
 
             </div>
-
-           
-
+ 
             <div>
               <h3>Select any payment Method</h3>
               <label>
@@ -138,6 +129,7 @@
           </div>
 
 
+          
         </div>
         <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
           <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
@@ -279,9 +271,7 @@
     });
 
   </script>
-
-
-  <!-- script for sending the data to the backe end through ajax-->
+ 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       let selectedAddress = null;
@@ -294,17 +284,17 @@
 
       // Function to handle payment method selection
       document.querySelectorAll('input[name="paymentMethod"]').forEach(function (radio) {
-        radio.addEventListener('change', function () {
-          selectedPaymentMethod = this.value;
-        });
-      });
+    radio.addEventListener('change', function () {
+      selectedPaymentMethod = this.value;
+    });
+  });
 
       // Add event listener for each "Select" button
-      document.querySelectorAll('.edit-address').forEach(function (button) {
-        button.addEventListener('click', function () {
-          selectAddress(this.dataset.addressId);
-        });
-      });
+      document.querySelectorAll('.select-address').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      selectAddress(this.dataset.addressId);
+    });
+  });
 
       // Function to process the order
       document.getElementById('processOrder').addEventListener('click', function () {
@@ -391,9 +381,7 @@
   </script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
  
-
-
-
+ 
   <!-- Footer -->
   <%- include("../partials/footer.ejs") -%>
     <!-- Footer -->
