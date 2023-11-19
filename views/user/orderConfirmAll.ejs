@@ -20,10 +20,10 @@
             <div class="p-4">
               <h5 class="card-title mb-3">Select Your Address</h5>
                
-              <div class="address-container d-flex flex-nowrap overflow-auto" style="white-space: nowrap;">
+              <div class="address-container d-flex flex-nowrap overflow-auto" style="white-space: nowrap; ">
                 <% if (address.length > 0) { %>
                   <% address.forEach(address => { %>
-                    <div class="address-card p-3 border rounded me-3" style="width: 250px; height: 200px;">
+                    <div class="address-card p-3 border rounded me-3" style="width: 250px; height: 200px; text-align: center;">
                       <strong>House Name:</strong>
                       <%= address.userName %><br>
                         <strong>Street:</strong>

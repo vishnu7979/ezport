@@ -2,10 +2,22 @@ var express = require('express');
 var router = express.Router();
 
 const usercontroller=require("../controllers/usercontroller")
+const bannercontroller=require('../controllers/bannercontroller')
+const categorycontroller=require('../controllers/categorycontroller')
+const ordercontroller=require('../controllers/ordercontroller')
+const productcontroller=require('../controllers/productcontroller')
+const couponcontroller=require('../controllers/couponcontroller')
+const cartcontroller=require('../controllers/cartcontroller')
+const offercontroller=require('../controllers/offercontroller')
+const walletcontroller=require('../controllers/walletcontroller')
+const addresscontroller=require('../controllers/addresscontroller')
+const profilecontroller=require('../controllers/profilecontroller')
+
+
 const userauthentication=require('../middlewares/userAuthentication')
 
 
-
+//user
 router.get('/',usercontroller.landing)
 router.get('/login',usercontroller.login)
 router.get('/products',usercontroller.products)
@@ -18,66 +30,63 @@ router.post('/loginpost',usercontroller.loginpost)
 router.get('/logout',userauthentication.userauthentication,userauthentication.isBlock,usercontroller.logout)
 router.post('/verifyOTP', usercontroller.verifyOTP);
 router.post('/resendOTP', usercontroller.resendOTP);
-router.get('/showproducts',usercontroller.showProducts)
-router.get('/user/products', usercontroller.displayProducts);
+router.get('/shop',  usercontroller.shop);
 
-router.get('/product/:id', usercontroller.viewProductDetails);
 
-router.post('/addtocart',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.addToCart);
-router.get('/cart',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.viewCart);
-router.post('/cart/update/:itemId',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.updateCartItem);
-router.post('/cart/remove/:itemId',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.removeCartItem);
-router.get('/address',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.viewAddress);
-router.post('/storeaddress',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.storeAddress);
-router.get('/displayaddress',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.displayAddress);
 
-router.get('/displayaddress/:productId',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.displayAddress);
-router.get('/editaddress/:id',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.editAddress);
-router.post('/updateaddress/:id',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.updateAddress);
-router.get('/paymentmethod',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.showPaymentMethod);
-router.post('/paymentmethod',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.showPaymentMethodpost);
+//products
+router.get('/showproducts',productcontroller.showProductss)
+router.get('/user/products', productcontroller.displayProducts);
+router.get('/product/:id', productcontroller.viewProductDetails);
+router.get('/filterproducts',productcontroller.filterProducts);
 
-// router.post('/makepayment', usercontroller.makePayment);
 
-// router.get('/orderconfirm/:addressId/:productId', usercontroller.showOrderConfirmation);
-router.get('/orderConfirmAll',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.showOrderConfirmationAll);
-router.get('/myorders', userauthentication.userauthentication,userauthentication.isBlock, usercontroller.getUserOrders);
-// router.get('/feedback', usercontroller.feedback);
-router.get('/feedback/:orderId', userauthentication.userauthentication,userauthentication.isBlock,usercontroller.feedback);
+//cart
+router.post('/addtocart',userauthentication.userauthentication,userauthentication.isBlock, cartcontroller.addToCart);
+router.get('/cart',userauthentication.userauthentication,userauthentication.isBlock, cartcontroller.viewCart);
+router.post('/cart/update/:itemId',userauthentication.userauthentication,userauthentication.isBlock, cartcontroller.updateCartItem);
+router.post('/cart/remove/:itemId',userauthentication.userauthentication,userauthentication.isBlock, cartcontroller.removeCartItem);
 
-router.get('/profile',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.profile);
-router.get('/myreturns',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.getMyReturnsPage);
-router.post('/claimReference',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.claimReferenceCode);
 
-router.post('/submitFeedback',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.submitFeedback);
+//address
+router.get('/address',userauthentication.userauthentication,userauthentication.isBlock, addresscontroller.viewAddress);
+router.post('/storeaddress',userauthentication.userauthentication,userauthentication.isBlock, addresscontroller.storeAddress);
+router.get('/displayaddress',userauthentication.userauthentication,userauthentication.isBlock, addresscontroller.displayAddress);
+router.get('/displayaddress/:productId',userauthentication.userauthentication,userauthentication.isBlock, addresscontroller.displayAddress);
+router.get('/editaddress/:id',userauthentication.userauthentication,userauthentication.isBlock, addresscontroller.editAddress);
+router.post('/updateaddress/:id',userauthentication.userauthentication,userauthentication.isBlock, addresscontroller.updateAddress);
 
-router.get('/forgotpassword',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.forgotpassword);
-router.post('/forgotpasswordpost',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.forgotpasswordpost);
 
-router.get('/confirm',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.confirm);
 
-router.get('/changepassword',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.changepassword);
-router.post('/changepasswordpost',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.changepasswordpost);
+//order
+router.get('/downloadInvoice/:orderId',userauthentication.userauthentication,userauthentication.isBlock,ordercontroller.downloadInvoice)
+router.get('/orderConfirmAll',userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.showOrderConfirmationAll);
+router.get('/myorders', userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.getUserOrders);
+router.get('/feedback/:orderId', userauthentication.userauthentication,userauthentication.isBlock,ordercontroller.feedback);
+router.get('/myreturns',userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.getMyReturnsPage);
+router.get('/orderdetails/:orderId',userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.orderdetails);
+router.post('/cancelorder/:id',userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.cancelOrder);
+router.post('/returnOrder/:id',userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.returnOrder);
+router.post('/processOrder', userauthentication.userauthentication,userauthentication.isBlock,ordercontroller.processOrder);
+router.post('/saveOrder',userauthentication.userauthentication,userauthentication.isBlock,ordercontroller.saveOrder)
+router.get('/confirm',userauthentication.userauthentication,userauthentication.isBlock, ordercontroller.confirm);
 
-router.get('/shop',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.shop);
-router.get('/orderdetails/:orderId',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.orderdetails);
 
-router.post('/cancelorder/:id',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.cancelOrder);
-router.post('/returnOrder/:id',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.returnOrder);
+//profile
+router.get('/profile',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.profile);
+router.post('/submitFeedback',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.submitFeedback);
+router.get('/forgotpassword',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.forgotpassword);
+router.post('/forgotpasswordpost',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.forgotpasswordpost);
+router.get('/changepassword',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.changepassword);
+router.post('/changepasswordpost',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.changepasswordpost);
 
-router.post("/applyCoupon",userauthentication.userauthentication,userauthentication.isBlock, usercontroller.applyCoupon)
 
-router.post('/processOrder', userauthentication.userauthentication,userauthentication.isBlock,usercontroller.processOrder);
-router.post('/saveOrder',userauthentication.userauthentication,userauthentication.isBlock,usercontroller.saveOrder)
+//offer
+router.post('/claimReference',userauthentication.userauthentication,userauthentication.isBlock, offercontroller.claimReferenceCode);
+router.post("/applyCoupon",userauthentication.userauthentication,userauthentication.isBlock, offercontroller.applyCoupon)
 
-router.get('/downloadInvoice/:orderId',userauthentication.userauthentication,userauthentication.isBlock,usercontroller.downloadInvoice)
+
+//wallet
+router.get('/wallethistory', userauthentication.userauthentication,userauthentication.isBlock,walletcontroller.wallethistory)
  
-router.get('/filterproducts',userauthentication.userauthentication,userauthentication.isBlock, usercontroller.filterProducts);
-
-router.get('/wallethistory', userauthentication.userauthentication,userauthentication.isBlock,usercontroller.wallethistory)
-
-
-
-
-
 module.exports = router;

@@ -45,7 +45,6 @@
                         <!-- <a href="#" class="nav-link">Blazer Suit Dress Jacket for Men</a> -->
                         <p>Description: <%= item.description %></p>
                         <p>Price: <%= item.price %></p>
-
                       </div>
                     </div>    
                   </div>
@@ -160,8 +159,8 @@
             <div class="card-body d-flex flex-column pt-3 border-top">
               <a href="#" class="nav-link"><%= product.name %></a>
               <div class="price-wrap mb-2">
-                <strong class="">$<%= product.price %></strong>
-                <del class="">$<%= product.price %></del>
+                <strong class=""><%= product.price %></strong>
+                <del class=""><%= product.price %></del>
               </div>
               <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
                 <form action="/addtocart" method="post">
