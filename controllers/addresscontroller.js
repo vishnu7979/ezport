@@ -19,7 +19,7 @@ const secret_Key = process.env.secret_Key;
 
 const viewAddress = (req, res) => {
     const userId = req.session.userId;
-    res.render("user/address");
+    res.render('error')
   };
   
 const storeAddress = async (req, res) => {
@@ -40,7 +40,7 @@ const storeAddress = async (req, res) => {
       res.redirect("/orderConfirmAll");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server address Error");
+      res.render('error')
     }
   };
   
@@ -58,7 +58,7 @@ const displayAddress = async (req, res) => {
         res.render("user/displayAddress", { addresses, productId });
       } catch (error) {
         console.log(error.message);
-        res.status(500).send("Internal Server Error");
+        res.render('error')
       }
     } else {
       res.redirect("/login");
@@ -77,7 +77,7 @@ const editAddress = async (req, res) => {
       res.render("user/edit_adress", { address });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server Error");
+      res.render('error')
     }
   };
   
@@ -102,7 +102,7 @@ const updateAddress = async (req, res) => {
       res.redirect("/displayaddress");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server Error");
+      res.render('error')
     }
   };
   
@@ -113,4 +113,6 @@ const updateAddress = async (req, res) => {
     editAddress,
     updateAddress,
    }
+
+   
   

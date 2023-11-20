@@ -135,7 +135,7 @@ const signuppost = async (req, res) => {
       }
     } catch (error) {
       console.error(error);
-      res.send("An error occurred while processing your request.");
+      res.render('error') 
     }
   } else {
     const msg = "Email is already Registered";
@@ -212,7 +212,7 @@ const sendOTPByEmail = async (email, otp) => {
         <h1>OTP Verification</h1>
         <p>Your OTP for verification is:</p>
         <h2 style="font-size: 24px">${otp}</h2>
-        <p>Please use this OTP to log in to your account.</p>
+        <p>Please use this OTP to log in to your agorts account.</p>
         <p>If you didn't request this OTP, ignore this email.</p>
         `,
   };
@@ -233,6 +233,7 @@ const sendOTPByEmail = async (email, otp) => {
     console.error(error);
   }
 };
+
 
 const verifyOTP = async (req, res) => {
   const enteredOTP = req.body.otp;
@@ -261,7 +262,7 @@ const verifyOTP = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.send("An error occurred while processing your request.");
+    res.render('error') 
   }
 };
 
@@ -296,82 +297,14 @@ const sendOTP = async (req, res) => {
     res.render("user/otp", { msg: "Please enter the OTP sent to your email" });
   } catch (error) {
     console.error(error);
-    res.send("An error occurred while processing your request.");
+    res.render('error') 
   }
 };
 
  
+ 
 
-const makePayment = async (req, res) => {
-  try {
-    console.log("am i here????");
-    const { paymentOption, updatedTprice } = req.body;
-    // const totalPrice = req.session.totalPrice;
-    const addressDetails = req.session.addressDetails;
-    const productDetails = req.session.productDetails;
-    const userDetails = req.session.userDetails;
-
-    if (!Array.isArray(productDetails)) {
-      const order = await Order.create({
-        userId: userDetails._id,
-        paymentMethod: paymentOption,
-        addressId: addressDetails._id,
-        products: [{ productId: productDetails._id }],
-        totalPrice: productDetails.price,
-        orderDate: new Date(),
-      });
-    }
-
-    const order = await Order.create({
-      userId: userDetails._id,
-      paymentMethod: paymentOption,
-      addressId: addressDetails._id,
-      products: productDetails.map((product) => ({
-        productId: product.productId._id,
-        quantity: product.quantity,
-      })),
-      totalPrice: updatedTprice,
-      orderDate: new Date(),
-    });
-
-    res.json({
-      success: true,
-      message: "Payment successful",
-      orderId: order._id,
-    });
-
-    res.render("user/confirm");
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
-  }
-};
-
-const showOrderConfirmation = async (req, res) => {
-  try {
-    console.log("reached here");
-    console.log(req.params);
-
-    const user = await collection.findOne({ email: req.session.user });
-    req.session.userDetails = user; // Store user details in session
-
-    const addressId = req.params.addressId;
-    const addresses = await Address.findById(addressId);
-    req.session.addressDetails = addresses;
-
-    const productId = req.params.productId;
-    console.log(productId);
-    const product = await Product.findById(productId);
-    // console.log(product)
-    req.session.productDetails = product;
-
-    res.render("user/orderConfirm", { user, address: addresses, product });
-  } catch (error) {
-    console.log("testing", error);
-    res.status(400).send("Internal Server Error testing");
-  }
-}; 
-
+ 
  
  
 const wallet = async (req, res) => {
@@ -387,6 +320,7 @@ const wallet = async (req, res) => {
       });
     }
 
+    
     const walletBalance = userWallet.balance;
 
     res.render("user/wallet", { msg: "", walletBalance: walletBalance });
@@ -423,9 +357,7 @@ module.exports = {
   verifyOTP,
   sendOTP,
   resendOTP,
-  makePayment,
-  showOrderConfirmation,
-   wallet,
+  wallet,
   shop,
  
 };

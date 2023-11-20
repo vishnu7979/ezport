@@ -49,8 +49,8 @@ const addproductpost = async (req, res) => {
         res.render('admin/product_form', { categories });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+        res.render('admin/404')
+      }
 };
 
  
@@ -85,7 +85,7 @@ const showProducts = async (req, res) => {
         res.render('admin/show_products', { products, deletedProducts, activeCategories, page, limit, searchQuery });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 }
 
@@ -101,7 +101,7 @@ const editProduct = async (req, res) => {
         res.render('admin/edit_product', { product, categories });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 
@@ -139,7 +139,7 @@ const updateProduct = async (req, res) => {
         res.redirect('/admin/showproducts');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 
@@ -206,7 +206,7 @@ const showProductss = async (req, res) => {
       });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server Error");
+      res.render('error')
     }
   };
   
@@ -256,17 +256,15 @@ const showProductss = async (req, res) => {
       });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server Error");
+      res.render('error')
     }
   };
   
   
 
   const viewProductDetails = async (req, res) => {
-    console.log("Inside viewProductDetails"); // to Check if this is printed
-    const productId = req.params.id;
-    console.log("Product ID:", productId); // to check
-  
+     const productId = req.params.id;
+   
     const product = await Product.findById(productId);
     const products = await Product.find();
   
@@ -357,7 +355,7 @@ const showProductss = async (req, res) => {
       });
     } catch (error) {
       console.error('Error filtering products:', error);
-      res.status(500).send('Internal Server Error');
+      res.render('error')
     }
   };
   

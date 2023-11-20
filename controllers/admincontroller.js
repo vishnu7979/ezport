@@ -61,7 +61,7 @@ const userDetails = async (req, res) => {
         res.render('admin/userDetails', { users });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 }
 
@@ -90,7 +90,7 @@ const blockUser = async (req, res) => {
         res.redirect('/admin/userDetails');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 }
 
@@ -109,7 +109,7 @@ const unblockUser = async (req, res) => {
         res.redirect('/admin/userDetails');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 }
 

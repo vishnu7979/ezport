@@ -66,7 +66,7 @@ const addCoupon = async (req, res) => {
         res.redirect('/admin/coupons'); 
     } catch (error) {
         // Handle errors - You can redirect to an error page or send an error response
-        res.status(500).send('Internal Server Error'); // Replace with your error handling logic
+        res.render('admin/404')
     }
 };
 
@@ -80,7 +80,7 @@ const deleteCoupon = async (req, res) => {
         res.redirect('/admin/coupons'); // Redirect back to the admin page after deletion
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 

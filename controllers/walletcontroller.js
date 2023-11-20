@@ -67,13 +67,14 @@ const wallethistory = async (req, res) => {
         res.render('user/walletHistory', { transactions });
       } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('error') 
       }
     } else {
       res.redirect('/login');
     }
   };
 
+  
   
   module.exports={
     wallethistory

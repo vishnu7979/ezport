@@ -38,7 +38,7 @@ const addToCart = async (req, res) => {
         res.redirect("/cart");
       } catch (error) {
         console.error(error);
-        res.status(500).send("Internal Server Error");
+        res.render('error')
       }
     } else {
       res.redirect("/login");
@@ -99,7 +99,7 @@ const addToCart = async (req, res) => {
       }
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.render('error')
     }
   };
   
@@ -144,7 +144,7 @@ const addToCart = async (req, res) => {
       res.json({ success: true, newQuantity, newTotalPrice });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: 'Internal server error' });
+      res.render('error')
     }
   };
   
@@ -156,7 +156,7 @@ const addToCart = async (req, res) => {
       res.redirect("/cart");
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server Error");
+      res.render('error')
     }
   };
   

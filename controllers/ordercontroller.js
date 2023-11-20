@@ -26,13 +26,16 @@ const showOrderManagement = async (req, res) => {
         if (!Order) {
             throw new Error('No orders found');
         }
-console.log("insideom");
+
         res.render('admin/orderManagement', { order, hasReturnedOrder });
     } catch (error) {
         console.error("error");
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
+
+
+
 
 
 const viewdetails = async (req, res) => {
@@ -41,7 +44,6 @@ const viewdetails = async (req, res) => {
       
       // Find the order by its ID
       const order = await Order.findById(orderId).populate('products.productId').populate('addressId');
-      console.log('order is here',order);
       if (!order) {
         return res.status(404).send('Order not found'); // Handle case where order is not found
       }
@@ -50,7 +52,7 @@ const viewdetails = async (req, res) => {
       res.render('admin/viewdetails', { order });
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.render('admin/404')
     }
   };
 
@@ -95,7 +97,7 @@ const viewdetails = async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false });
+        res.render('admin/404')
     }
 }
 
@@ -201,7 +203,7 @@ const toggleProductAvailability = async (req, res) => {
         res.redirect('/admin/showproducts');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 
@@ -211,8 +213,7 @@ const toggleProductAvailability = async (req, res) => {
 const showOrderConfirmationAll = async (req, res) => {
     try {
   
-      console.log("object");
-      const user = await collection.findOne({ email: req.session.user });
+       const user = await collection.findOne({ email: req.session.user });
       req.session.userDetails = user;
   
       const cartItems = await CartItem.find({ userId: user._id }).populate(
@@ -235,15 +236,8 @@ const showOrderConfirmationAll = async (req, res) => {
         return res.redirect("/cart?alert=emptyCart");
       }
       
-  
       const grantTotal = totalPrice;
-      console.log("user is",user)
-      console.log("products is:",products)
-      console.log("total pricee",totalPrice)
-      console.log("addresses is ",address)
-      console.log("coupouns",coupons)
-      console.log("grandtotal is:",grantTotal)
-  
+
       res.render("user/orderConfirmAll", {
         user,
         products,
@@ -315,6 +309,7 @@ const feedback = (req, res) => {
     };
   
     res.render("user/feedback", { order });
+    
   };
   
 
@@ -322,6 +317,8 @@ const feedback = (req, res) => {
 const confirm = (req, res) => {
     res.render("user/confirm");
   };
+
+
 
 
 const getMyReturnsPage = async (req, res) => {
@@ -338,11 +335,11 @@ const getMyReturnsPage = async (req, res) => {
       res.render('error') 
     }
   };
+  
 
 
 
-
-  const cancelOrder = async (req, res) => {
+const cancelOrder = async (req, res) => {
     const orderId = req.params.id;
     console.log("id of the order to cancel", orderId);
   
@@ -416,7 +413,7 @@ const getMyReturnsPage = async (req, res) => {
   };
 
 
-  const orderdetails = async (req, res) => {
+const orderdetails = async (req, res) => {
     try {
       const orderId = req.params.orderId; // Get orderId from URL parameters
   
@@ -432,7 +429,7 @@ const getMyReturnsPage = async (req, res) => {
        res.render("user/orderdetails", { order });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal Server Error");
+      res.render('error')
     }
   };
   

@@ -23,7 +23,7 @@ const categoryManagement = async (req, res) => {
         res.render('admin/category_management', { activeCategories, categories });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 
@@ -48,7 +48,7 @@ const addCategory = async (req, res) => {
         res.redirect('/admin/categorymanagement');
     } catch (error) {
         console.error(error);   
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 }
 
@@ -68,7 +68,7 @@ const deleteCategory = async (req, res) => {
         res.redirect('/admin/categorymanagement');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 }
 
@@ -87,7 +87,7 @@ const editCategory = async (req, res) => {
         res.render('admin/edit_category', { category });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 
@@ -113,7 +113,7 @@ const editCategoryPost = async (req, res) => {
         res.redirect('/admin/categorymanagement');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 

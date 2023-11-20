@@ -25,7 +25,7 @@ const sendCategoryOffer = async (req, res) => {
         res.render('admin/categoryoffer', { activeCategories, categories });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };  
 
@@ -55,7 +55,7 @@ const applyOffer = async (req, res) => {
         return res.json({ success: true, message: 'Offer applied successfully' });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        res.render('admin/404')
     }
 };
 
@@ -148,7 +148,7 @@ const claimReferenceCode = async (req, res) => {
 
 
 
-  const applyCoupon = async (req, res) => {
+const applyCoupon = async (req, res) => {
     try {
        
       const couponCode = req.body.couponCode;
@@ -181,7 +181,7 @@ const claimReferenceCode = async (req, res) => {
       console.error(error);
       res.status(500).send("Internal Server Error");
     }
-  };
+};
   
   
 

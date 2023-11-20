@@ -24,7 +24,7 @@ const getbanner = async (req, res) => {
     } catch (err) {
       console.error("Error is ", err);
       // Render the banners page with an error message or redirect to an error page
-      res.render('error', { errorMessage: 'An error occurred' });
+      res.render('admin/404')
     }
   };
 
@@ -49,7 +49,7 @@ const getbanner = async (req, res) => {
       res.redirect('/admin/banners');  
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.render('admin/404')
     }
   };
   
@@ -64,7 +64,7 @@ const getbanner = async (req, res) => {
       res.redirect('/admin/banners'); // Redirect to the banners page after deletion
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal Server Error');
+      res.render('admin/404')
     }
   };
   

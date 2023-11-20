@@ -97,8 +97,7 @@ const profile = async (req, res) => {
   };
   
   const changepassword = (req, res) => {
-    console.log("hek");
-    res.render("user/changepassword");
+     res.render("user/changepassword");
   };
    
   
@@ -128,7 +127,7 @@ const profile = async (req, res) => {
       }
     } catch (error) {
       console.error(error);
-      res.send("An error occurred while processing your request.");
+      res.render('error') 
     }
   };
 

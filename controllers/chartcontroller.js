@@ -159,7 +159,7 @@ const chart = async (req, res) => {
         console.log("paymentMethodData is:", paymentMethodData);
       } catch (error) {
         console.error('Error fetching data:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.render('admin/404')
       }
     } else {
       res.status(403).json({ error: 'Unauthorized'});
@@ -173,7 +173,7 @@ const chart = async (req, res) => {
         res.render('admin/charts');  
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.render('admin/404')
     }
 };
 
