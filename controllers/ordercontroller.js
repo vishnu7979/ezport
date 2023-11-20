@@ -68,7 +68,7 @@ const viewdetails = async (req, res) => {
         const updatedOrder = await Order.findByIdAndUpdate(
             orderId,
             { status: newStatus },
-            { new: true } // Set to true to return the updated order
+            { new: true }  
         );
 
         if (updatedOrder) {
@@ -132,11 +132,18 @@ const acceptreturn = async (req, res) => {
         if (order.paymentMethod !== "cashOnDelivery") {
             order.set({ acceptReturn: true });
 
+            user.wallet.transactions.push({
+              amount: order.totalPrice,
+              type: 'Credit',
+            });
+
+            user.wallet.balance += order.totalPrice;
+            await user.wallet.save();
+  
             const tprice = order.totalPrice;
             const variable = WWallet.balance + tprice;
 
-            // Update the wallet balance only if paymentMethod is not "cashOnDelivery"
-            WWallet.balance = variable;
+             WWallet.balance = variable;
 
             console.log(variable);
 
@@ -146,7 +153,6 @@ const acceptreturn = async (req, res) => {
         } else {
             order.set({ acceptReturn: true });
         }
-
         await order.save();
 
         res.redirect('/admin/OrderManagement');
@@ -155,6 +161,8 @@ const acceptreturn = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+
 
 
 

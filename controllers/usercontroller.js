@@ -358,6 +358,6 @@ module.exports = {
   sendOTP,
   resendOTP,
   wallet,
-  shop,
+  shop
  
 };
