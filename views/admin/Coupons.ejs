@@ -28,7 +28,8 @@
                                         <p class="card-text text-center">Max Value: <%= coupon.maxValue %></p>
                                         <p class="card-text text-center">Min Value: <%= coupon.minValue %></p>
                                         <p class="card-text text-center">Expiry Date: <%= coupon.expiryDate %></p>
-                                        <a style="display: flex; justify-content: center;" href="/admin/delete-coupon/<%= coupon._id %>"  class="btn btn-danger">Delete</a>
+                                        <!-- <a style="display: flex; justify-content: center;"   class="btn btn-danger">Delete</a> -->
+                                        <a href="/admin/delete-coupon/<%= coupon._id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
                                     </div>
                                 </div>
                             </div>
