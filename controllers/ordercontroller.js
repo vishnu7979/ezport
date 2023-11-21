@@ -78,9 +78,16 @@ const viewdetails = async (req, res) => {
                 if (user) {
                     const totalPrice = updatedOrder.totalPrice;
 
-                    if (user.wallet) {
-                        user.wallet.balance += totalPrice;
+                    if (user.wallet)  {
+                      if (order.paymentMethod !== 'cashOnDelivery') {
+                         user.wallet.transactions.push({
+                          amount: totalPrice,
+                          type: 'Credit',
+                        });
+              
+                         user.wallet.balance += totalPrice;
                         await user.wallet.save();
+                      }
                     } else {
                         const newWallet = new Wallet({ balance: totalPrice });
                         await newWallet.save();
@@ -103,8 +110,6 @@ const viewdetails = async (req, res) => {
 
 
 
-
- 
 const acceptreturn = async (req, res) => {
     const orderId = req.body.orderId;
     console.log(orderId);
