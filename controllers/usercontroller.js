@@ -41,6 +41,13 @@ const login = (req, res) => {
 
 
 const logout = (req, res) => {
+
+// Set cache control headers to prevent caching
+res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+res.header('Pragma', 'no-cache');
+res.header('Expires', '-1');
+
+
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);

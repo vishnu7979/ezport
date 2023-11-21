@@ -133,15 +133,38 @@ const addToCart = async (req, res) => {
       }
   
       // Update the quantity of the cart item
-      const itemPrice = product.price;
-      cartItem.quantity = newQuantity;
-      cartItem.totalPrice = itemPrice * newQuantity;
-      const newTotalPrice = cartItem.totalPrice;
-      console.log("newTotalPrice:", newTotalPrice);
-      // Save the updated cart item
-      await cartItem.save();
-      req.session.totalPrice = newTotalPrice;
-      res.json({ success: true, newQuantity, newTotalPrice });
+
+      // const itemPrice = product.price;
+      // cartItem.quantity = newQuantity;
+      // cartItem.totalPrice = itemPrice * newQuantity;
+      // const newTotalPrice = cartItem.totalPrice;
+      // console.log("newTotalPrice:", newTotalPrice);
+      // // Save the updated cart item
+      // await cartItem.save();
+      // req.session.totalPrice = newTotalPrice;
+      // res.json({ success: true, newQuantity, newTotalPrice });
+
+      // Update the quantity of the cart item
+    const itemPrice = product.price;
+    let priceChange;
+    let diff = newQuantity - cartItem.quantity;
+    if (newQuantity > cartItem.quantity) {
+      // increment
+      priceChange = diff * itemPrice; // this to add to the final result
+    } else {
+      // decrement
+      priceChange = -Math.abs(diff * itemPrice);
+    }
+    cartItem.quantity = newQuantity;
+    cartItem.totalPrice = itemPrice * newQuantity;
+    const newTotalPrice = cartItem.totalPrice;
+    console.log("newTotalPrice:", newTotalPrice);
+    // Save the updated cart item
+    await cartItem.save();
+    req.session.totalPrice = newTotalPrice;
+    res.json({ success: true, newQuantity, newTotalPrice, priceChange });
+
+    
     } catch (error) {
       console.error(error);
       res.render('error')

@@ -232,7 +232,7 @@ rel="stylesheet"
             <img src="/uploads/<%= product.image %>" alt="<%= product.name %>" class="card-img-top" style="height: 200px; object-fit: contain; width: 100%;">
             <div class="card-body d-flex flex-column">
               <h3 class="card-title"><%= product.name %></h3>
-              <h5 class="card-title"><%= product.price %></h5>
+              <h5 class="card-title"><%= product.price %></h5><del class=""><%= product.realPrice %></del>
               <p class="card-text"><%= product.description %></p>
               <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
                 <form action="/addtocart" method="post">
@@ -255,9 +255,7 @@ rel="stylesheet"
     
    </div>
  </section>
- <!-- Products -->
  
- <!-- Feature -->
  <section class="mt-5" style="background-color: #f5f5f5;">
    <div class="container text-dark pt-3">
      <header class="pt-4 pb-3">
@@ -275,7 +273,7 @@ rel="stylesheet"
              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
            </figcaption>
          </figure>
-         <!-- itemside // -->
+        
        </div>
        <!-- col // -->
        <div class="col-lg-4 col-md-6">
@@ -288,9 +286,7 @@ rel="stylesheet"
              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
            </figcaption>
          </figure>
-         <!-- itemside // -->
        </div>
-       <!-- col // -->
        <div class="col-lg-4 col-md-6">
          <figure class="d-flex align-items-center mb-4">
            <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
@@ -301,9 +297,7 @@ rel="stylesheet"
              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
            </figcaption>
          </figure>
-         <!-- itemside // -->
        </div>
-       <!-- col // -->
        <div class="col-lg-4 col-md-6">
          <figure class="d-flex align-items-center mb-4">
            <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">

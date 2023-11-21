@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>agorts</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="kfonts/material-icon/css/material-design-iconic-font.min.css">
@@ -81,22 +81,22 @@
     
                 let isValid = true;
     
-                // Simple username validation (at least 3 characters)
-                if (username.length < 3) {
-                    alert('Username must be at least 3 characters long');
+                // Simple username validation (at least 3 characters) and no white space
+                if (username.length < 3 || /\s/.test(username)) {
+                    alert('Username must be at least 3 characters long and cannot contain white space');
                     isValid = false;
                 }
     
-                // Simple email validation
+                // Simple email validation and no white space
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    alert('Please enter a valid email address');
+                if (!emailRegex.test(email) || /\s/.test(email)) {
+                    alert('Please enter a valid email address without white space');
                     isValid = false;
                 }
     
-                // Simple password validation (at least 6 characters)
-                if (password.length < 6) {
-                    alert('Password must be at least 6 characters long');
+                // Simple password validation (at least 6 characters) and no white space
+                if (password.length < 6 || /\s/.test(password)) {
+                    alert('Password must be at least 6 characters long and cannot contain white space');
                     isValid = false;
                 }
     
@@ -104,6 +104,7 @@
             }
         });
     </script>
+    
     <script src="kvendor/jquery/jquery.min.js"></script>
     <script src="kjs/main.js"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->

@@ -38,7 +38,11 @@ const ProductSchema = new mongoose.Schema({
     offer:{
         type:Number,
          
-    }
+    },
+    realPrice:{
+        type:Number,
+        
+      },
 
 });
 

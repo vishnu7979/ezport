@@ -45,10 +45,11 @@ const applyOffer = async (req, res) => {
         // Find all products belonging to the category
         const products = await Product.find({ category: category.name });
 
-        // Update the prices of the products
-        for (const product of products) {
+         for (const product of products) {
             const updatedPrice = Math.floor(product.price - (product.price * (percentage / 100)));
+            const realPrice=product.price;
             product.price = updatedPrice;
+            product.realPrice=realPrice;
             await product.save();
         }
 

@@ -113,6 +113,7 @@ const updateProduct = async (req, res) => {
     const additionalImages = req.files.additionalImages ? req.files.additionalImages.map(file => file.filename) : [];
 
     try {
+        const realPrice=price 
         let updatedPrice = price; // Initialize updated price with the original price
 
         // Apply offer if it is greater than zero
@@ -129,7 +130,8 @@ const updateProduct = async (req, res) => {
             image,
             quantity,
             additionalImages,
-            offer
+            offer,
+            realPrice:realPrice
         }, { new: true });
 
         if (!updatedProduct) {

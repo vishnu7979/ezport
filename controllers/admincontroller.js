@@ -27,12 +27,19 @@ const dashboard = async (req, res) => {
 
 
 const adminlogout = (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Error destroying session:", err);
-      }
-      res.redirect("/admin/login");
-    });
+    // req.session.destroy((err) => {
+    //   if (err) {
+    //     console.error("Error destroying session:", err);
+    //   }
+    //   res.redirect("/admin/login");
+    // });
+
+    console.log('Admin Session Before Destroy:', req.session);
+    
+    req.session.admin=null;
+
+    res.redirect('/admin/login');
+
   };
 
 
@@ -79,12 +86,7 @@ const blockUser = async (req, res) => {
 
 
  
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Error destroying session:', err);
-            }
-             
-        });
+       req.session.user=null;
 
 
         res.redirect('/admin/userDetails');

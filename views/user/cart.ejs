@@ -178,7 +178,7 @@
   </section>
   <!-- Recommended -->
 
-  <script>
+  <!-- <script>
     $(document).ready(function() {
       $(".increaseQuantity").on("click", function() {
         const itemInput = $(this).closest(".input-group").find(".form-control");
@@ -230,7 +230,63 @@
         });
       }
     });
-    </script>
+    </script> -->
+
+    <script>
+      $(document).ready(function() {
+        $(".increaseQuantity").on("click", function() {
+          const itemInput = $(this).closest(".input-group").find(".form-control");
+          const currentQuantity = parseInt(itemInput.val());
+          const newQuantity = currentQuantity + 1;
+          console.log(itemInput[0]);
+          
+        console.log("quantity of " + itemInput + "was increased from " + currentQuantity + " to " + newQuantity)  
+          updateQuantity(itemInput, newQuantity);
+        });
+      
+        $(".decreaseQuantity").on("click", function() {
+          const itemInput = $(this).closest(".input-group").find(".form-control");
+          const currentQuantity = parseInt(itemInput.val());
+      
+          // Check if the current quantity is greater than 1 before decreasing
+          if (currentQuantity > 1) {
+            const newQuantity = currentQuantity - 1;
+            
+        console.log("quantity of " + itemInput + "was decreased from " + currentQuantity + " to " + newQuantity)  
+            updateQuantity(itemInput, newQuantity);
+          }
+        });
+      
+        function updateQuantity(itemInput, newQuantity) {
+          const currentQuantity = parseInt(itemInput.val());
+          const itemId = itemInput.data("item-id");
+      
+          $.ajax({
+            type: "POST",
+            url:"/cart/update/" + itemId,
+            data: { quantity: newQuantity },
+            success: function(response) {
+              if (response.success) {
+                itemInput.val(response.newQuantity);
+                const totalPriceElement = document.querySelector('#totalPriceValue');
+                let currentTotal = parseFloat(totalPriceElement.innerText.replaceAll('$', '').trim());
+                totalPriceElement.innerText = currentTotal + response.priceChange;
+                const totalPriceElement2 = document.querySelector('#totalPriceValue2');
+                totalPriceElement2.innerText = currentTotal + response.priceChange;
+                 
+              } else {
+                // Handle error
+              }
+            },
+            error: function(err) {
+              if (err.status === 400) {
+                alert("Product out of quantity.")
+              }
+            }
+          });
+        }
+      });
+      </script>
      
 
 <script>
