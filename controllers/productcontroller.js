@@ -112,11 +112,11 @@ const updateProduct = async (req, res) => {
     const image = req.files.image[0] ? req.files.image[0].filename : '';
     const additionalImages = req.files.additionalImages ? req.files.additionalImages.map(file => file.filename) : [];
 
-    try {
+    try { 
         const realPrice=price 
         let updatedPrice = price; // Initialize updated price with the original price
 
-        // Apply offer if it is greater than zero
+         
         if (offer > 0) {
             const offerAmount = (offer / 100) * price; // Calculate offer amount
             updatedPrice = Math.floor(price - offerAmount); // Calculate updated price after applying offer
@@ -124,7 +124,7 @@ const updateProduct = async (req, res) => {
 
         const updatedProduct = await Product.findByIdAndUpdate(productId, {
             name,
-            description,
+             description,
             price: updatedPrice, // Use the updated price
             category,
             image,

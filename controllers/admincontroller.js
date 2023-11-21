@@ -14,12 +14,13 @@ const login = (req, res) => {
      res.render('admin/login', { msg: '' });
 }
 
-const dashboard = async (req, res) => {
+const dashboard = async (req, res) => { 
     if(req.session.admin){
-        const order = await Order.find().populate('products.productId').populate("userId")
+        const order = await Order.find().populate('products.productId').populate("userId") 
          res.render('admin/dashboard', { msg:'' ,order });
     }
     else{
+ 
         res.redirect('/admin/login')
     }
 }

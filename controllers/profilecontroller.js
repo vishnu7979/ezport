@@ -62,40 +62,6 @@ const profile = async (req, res) => {
   
   
   
-  const forgotpassword = (req, res) => {
-    res.render("user/forgotpassword", { msg: "" });
-  };
-  
-  const forgotpasswordpost = async (req, res) => {
-    const email = req.body.email;
-    console.log(email);
-    try {
-      const { email } = req.body;
-      const check = await collection.findOne({ email: req.body.email });
-      if (check) {
-        const otp = generateOTP();
-        console.log(otp);
-        if (check.isblocked) {
-          res.render("user/login", { error: "you are blocked by admin !!!" });
-        }
-        req.session.user = req.body.email;
-        req.session.otp = otp; // Store OTP in session
-        req.session.requestedOTP = true;
-        // Send the OTP to the user (you may use a notification library or email)
-  
-        await sendOTPByEmail(email, otp);
-        res.render("user/otp", {
-          msg: "Please enter the OTP sent to your email",
-        });
-      } else {
-        res.render("user/login", { error1: "User not found !!!" });
-      }
-    } catch (error) {
-      console.error(error);
-      res.render('error') 
-    }
-  };
-  
   const changepassword = (req, res) => {
      res.render("user/changepassword");
   };
@@ -163,8 +129,6 @@ const profile = async (req, res) => {
   module.exports={
     changepasswordpost,
     changepassword,
-    forgotpasswordpost,
-    forgotpassword,
     profile,
     submitFeedback
 

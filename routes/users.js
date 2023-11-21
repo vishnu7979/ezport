@@ -31,6 +31,8 @@ router.get('/logout',userauthentication.userauthentication,userauthentication.is
 router.post('/verifyOTP', usercontroller.verifyOTP);
 router.post('/resendOTP', usercontroller.resendOTP);
 router.get('/shop',  usercontroller.shop);
+router.get('/forgotpassword',  usercontroller.forgotpassword);
+router.post('/forgotpasswordpost',usercontroller.forgotpasswordpost);
 
 
 
@@ -75,8 +77,6 @@ router.get('/confirm',userauthentication.userauthentication,userauthentication.i
 //profile
 router.get('/profile',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.profile);
 router.post('/submitFeedback',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.submitFeedback);
-router.get('/forgotpassword',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.forgotpassword);
-router.post('/forgotpasswordpost',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.forgotpasswordpost);
 router.get('/changepassword',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.changepassword);
 router.post('/changepasswordpost',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.changepasswordpost);
 
