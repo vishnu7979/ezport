@@ -147,10 +147,19 @@ const updateProduct = async (req, res) => {
 
 
 
+
+
+//user
+
+
+
+
+
+
 const showProductss = async (req, res) => {
     try {
       const page = req.query.page || 1; // Get the requested page from the query parameter
-      const itemsPerPage = 6; // Number of items to display per page
+      const itemsPerPage = 3; // Number of items to display per page
   
       const delCat = await categoryCollection.find(
         { isDeleted: true },
@@ -216,7 +225,7 @@ const showProductss = async (req, res) => {
   const displayProducts = async (req, res) => {
     try {
       const page = req.query.page || 1; // Get the requested page from the query parameter
-      const itemsPerPage = 6; // Number of items to display per page
+      const itemsPerPage = 3; // Number of items to display per page
   
       const delCat = await categoryCollection.find(
         { isDeleted: true },
@@ -293,7 +302,7 @@ const showProductss = async (req, res) => {
       const searchQuery = req.query.searchQuery;
       const priceRange = req.query.priceRange; // Add this line to get the selected price range
       const page = req.query.page || 1;
-      const itemsPerPage = 6;
+      const itemsPerPage = 3;
   
       let filter = {
         isDeleted: { $in: [false, null] },

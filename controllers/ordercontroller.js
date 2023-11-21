@@ -227,6 +227,7 @@ const showOrderConfirmationAll = async (req, res) => {
     try {
   
        const user = await collection.findOne({ email: req.session.user });
+       const userWallet = await Wallet.findById(user.wallet);
       req.session.userDetails = user;
   
       const cartItems = await CartItem.find({ userId: user._id }).populate(
@@ -258,6 +259,7 @@ const showOrderConfirmationAll = async (req, res) => {
         address,
         coupons,
         grantTotal,
+        userWallet
       });
     } catch (error) {
       console.log(error);
@@ -717,6 +719,6 @@ module.exports={
     orderdetails,
     returnOrder,
     saveOrder,
-    processOrder
+    processOrder,
 
 }

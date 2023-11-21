@@ -105,7 +105,8 @@
               <h3>Select any payment Method</h3>
               <label>
                 <input type="radio" name="paymentMethod" value="wallet">
-                Wallet
+                Wallet 
+                 <p id="wallet-balance" style="color: red;">Balance: <%= userWallet.balance %></p>
               </label>
               <br>
               <label>
@@ -219,6 +220,45 @@
     </div>
   </section>
 
+<!--script to check wheather the wallet balance is sufficient or not-->
+ 
+ <!--script to check wheather the wallet balance is sufficient or not-->
+<script>
+  document.getElementById("processOrder").addEventListener("click", function () {
+     const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+ 
+     if (selectedPaymentMethod && selectedPaymentMethod.value === "wallet") {
+         const walletBalanceElement = document.getElementById("wallet-balance");
+ 
+         if (walletBalanceElement) {
+             // Extract numeric part from the text (remove "Balance:" and any non-numeric characters)
+             const walletBalanceText = walletBalanceElement.textContent.replace(/\D/g, '');
+             const walletBalance = Number(walletBalanceText);
+ 
+             const totalElement = document.getElementById("totalPrice");
+ 
+             if (totalElement) {
+                 const total = Number(totalElement.textContent);
+ 
+                 if (total > walletBalance) {
+                     alert("Insufficient Balance");
+                     return false;
+                 }
+             } else {
+                 console.error("Couldn't find elements with the specified IDs");
+             }
+         } else {
+             console.error("Couldn't find wallet balance element");
+         }
+     }
+ 
+     // Add additional logic for other payment methods if needed...
+ 
+     // If everything is good, proceed with order processing
+     console.log("Processing order...");
+ });
+ 
+ </script>
 
   <script src="path/to/checkout.js"></script>
   <script>

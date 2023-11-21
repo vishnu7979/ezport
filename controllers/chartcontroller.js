@@ -178,8 +178,6 @@ const chart = async (req, res) => {
 };
 
  
-
-
   module.exports={
     chart,
     charts,
