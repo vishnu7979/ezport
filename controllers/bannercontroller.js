@@ -33,8 +33,7 @@ const getbanner = async (req, res) => {
     res.render('admin/addBanner');
   };
 
-
-
+  
   const addBannerPost = async (req, res) => {
     const { name, description } = req.body;
   console.log(name,description);

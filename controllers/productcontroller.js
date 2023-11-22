@@ -369,8 +369,6 @@ const showProductss = async (req, res) => {
       res.render('error')
     }
   };
-  
- 
 
 module.exports={
     addproductpost,
