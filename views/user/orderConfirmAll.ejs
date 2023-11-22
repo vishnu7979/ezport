@@ -5,6 +5,7 @@
       border: 2px solid lightblue;
     }
   </style>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
   <section class="bg-light py-5">
@@ -223,6 +224,7 @@
 <!--script to check wheather the wallet balance is sufficient or not-->
  
  <!--script to check wheather the wallet balance is sufficient or not-->
+ <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
   document.getElementById("processOrder").addEventListener("click", function () {
      const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
@@ -241,9 +243,14 @@
                  const total = Number(totalElement.textContent);
  
                  if (total > walletBalance) {
-                     alert("Insufficient Balance");
-                     return false;
-                 }
+              // Use Toastify to display a toast message
+              Toastify({
+                text: "Insufficient Balance In Your Wallet !!!!",
+                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+              }).showToast();
+
+              return false;
+            }
              } else {
                  console.error("Couldn't find elements with the specified IDs");
              }
