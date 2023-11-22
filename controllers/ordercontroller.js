@@ -16,24 +16,40 @@ const secret_Id = process.env.secret_Id;
 const secret_Key = process.env.secret_Key;
 
 
+
+// function for getting user orders
 const showOrderManagement = async (req, res) => {
-    try {
-        const order = await Order.find().populate('products.productId').populate("userId")
-        
-        // Check if any order has been returned
-        const hasReturnedOrder = order.some(order => order.isReturned);
+  try {
 
-        if (!Order) {
-            throw new Error('No orders found');
-        }
 
-        res.render('admin/orderManagement', { order, hasReturnedOrder });
-    } catch (error) {
-        console.error("error");
-        res.render('admin/404')
+
+    const recentOrders = await Order.find()
+      .sort({ orderDate: -1 })
+      .populate({
+        path: 'products.productId',
+        model: 'Product'
+      })
+      .populate({
+        path: 'userId',
+        model: 'Collection1'
+      })
+      .exec();
+     const order= recentOrders;
+    console.log("Recent order user name is:", recentOrders);
+    const hasReturnedOrder = order.some(order => order.isReturned);
+
+    if (!recentOrders || recentOrders.length === 0) {
+      throw new Error('No orders found');
     }
+
+    res.render('admin/orderManagement', { order , hasReturnedOrder});
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
+ 
 
 
 
