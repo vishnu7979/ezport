@@ -13,7 +13,7 @@
             <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
               <i class="fa fa-chart-line fa-3x text-primary"></i>
               <div class="ms-3">
-                <p class="mb-2">Today's Order</p>
+                <p class="mb-2">Todays Order</p>
                 <h6 class="mb-0">0</h6>
               </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
               <i class="fa fa-chart-area fa-3x text-primary"></i>
               <div class="ms-3">
-                <p class="mb-2">Avg Order</p>
+                <p class="mb-2">Average Order</p>
                 <h6 class="mb-0">0</h6>
               </div>
             </div>
@@ -40,7 +40,7 @@
             <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
               <i class="fa fa-chart-pie fa-3x text-primary"></i>
               <div class="ms-3">
-                <p class="mb-2">Order Failed</p>
+                <p class="mb-2">Failed Order</p>
                 <h6 class="mb-0">0</h6>
               </div>
             </div>
@@ -69,8 +69,8 @@
                 <a href="#">Show All</a>
               </div>
               <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-              <button class="btn btn-primary id="downloadDailyPDF">Download PDF</button>
-              <button class="btn btn-success id="downloadDailyExcel">Download Excel</button>
+              <button id="downloadDailyPDF">Download PDF</button>
+              <button id="downloadDailyExcel">Download Excel</button>
 
             </div>
           </div>
@@ -90,8 +90,8 @@
                 <a href="#">Show All</a>
               </div>
               <canvas id="myMonthChart" style="width:100%;max-width:600px"></canvas>
-              <button class="btn btn-primary id="downloadMonthlyPDF">Download PDF</button>
-              <button class="btn btn-success id="downloadMonthlyExcel">Download Excel</button>
+              <button id="downloadMonthlyPDF">Download PDF</button>
+              <button id="downloadMonthlyExcel">Download Excel</button>
             </div>
           </div>
           <script>
@@ -109,8 +109,8 @@
                   <a href="#">Show All</a>
                 </div>
                 <canvas id="myYearChart" style="width:100%;max-width:600px"></canvas>
-                <button class="btn btn-primary id="downloadMonthlyPDF">Download PDF</button>
-              <button class="btn btn-success id="downloadMonthlyExcel">Download Excel</button>
+                <button id="downloadYearlyPDF">Download PDF</button>
+                <button id="downloadYearlyExcel">Download Excel</button>
               </div>
             </div>
             <script>
@@ -126,8 +126,8 @@
                  <h6 class="mb-0">Order Count by Payment Method</h6>
               </div>
              <canvas id="myPaymentMethodChart" style="width:100%;max-width:600px"></canvas>
-             <button class="btn btn-primary id="downloadMonthlyPDF">Download PDF</button>
-              <button class="btn btn-success id="downloadMonthlyExcel">Download Excel</button>  
+             <button id="downloadPaymentMethodPDF">Download PDF</button>
+             <button id="downloadPaymentMethodExcel">Download Excel</button>
             </div>
            </div>
            <script>
@@ -137,12 +137,16 @@
             });
             </script>
            
-          </div> 
-        </div>
+          </div>
+       
+        
+
+      </div>
       <!-- Sales Chart End -->
 
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" 
       integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -235,7 +239,7 @@
             document.getElementById('todaysOrderDiv').querySelector('h6').innerText = `${data.todaysOrder}`;
             document.getElementById('totalOrderDiv').querySelector('h6').innerText = `${data.totalOrder}`;
             document.getElementById('avgOrderDiv').querySelector('h6').innerText = `${data.avgOrder}`;
-            document.getElementById('totalRevenueDiv').querySelector('h6').innerText =` ${data.totalRevenue}`;
+            document.getElementById('totalRevenueDiv').querySelector('h6').innerText =` ₹${data.totalRevenue}`;
           })
           .catch(error => console.error('Error fetching chart data:', error));
       </script>
