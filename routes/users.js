@@ -79,12 +79,13 @@ router.get('/profile',userauthentication.userauthentication,userauthentication.i
 router.post('/submitFeedback',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.submitFeedback);
 router.get('/changepassword',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.changepassword);
 router.post('/changepasswordpost',userauthentication.userauthentication,userauthentication.isBlock, profilecontroller.changepasswordpost);
-
+router.get("/editProfile",userauthentication.isBlock,userauthentication.userauthentication,profilecontroller.getEditProfile)
+router.post("/editProfile/:id",userauthentication.isBlock,userauthentication.userauthentication,profilecontroller.getEditProfilePost)
 
 //offer
 router.post('/claimReference',userauthentication.userauthentication,userauthentication.isBlock, offercontroller.claimReferenceCode);
 router.post("/applyCoupon",userauthentication.userauthentication,userauthentication.isBlock, offercontroller.applyCoupon)
-
+router.post("/removeCoupon",userauthentication.isBlock,userauthentication.userauthentication, offercontroller.removeCoupon)
 
 //wallet
 router.get('/wallethistory', userauthentication.userauthentication,userauthentication.isBlock,walletcontroller.wallethistory)

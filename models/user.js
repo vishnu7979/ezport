@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 const DB_URL=process.env.atlas_URL
-mongoose.connect(DB_URL)
-// mongoose.connect("mongodb://127.0.0.1:27017/mini_project")
+// mongoose.connect(DB_URL)
+mongoose.connect("mongodb://127.0.0.1:27017/mini_project")
 .then(()=>{
    console.log("mongodb connected !!!"); 
 })

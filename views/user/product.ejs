@@ -68,12 +68,32 @@
                   <h5 class="card-title"><%= product.price %></h5><del class=""><%= product.realPrice %></del>
 
                   <p class="card-text"><%= product.description %></p>
+                  <p>
+                    <% if (product.quantity <= 0) { %>
+                      <span style="color: red;">Product Out of Stock</span>
+                    <% } else if (product.quantity <= 5) { %>
+                      <% if (product.quantity === 1) { %>
+                        <span style="color: red;">Only one more left</span>
+                      <% } else { %>
+                        <span style="color: red;">Only <%= product.quantity %> more left</span>
+                      <% } %>
+                    <% } else { %>
+                     
+                    <% } %>
+                  </p>
                   <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
                    <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
 
-                      <form action="/addtocart" method="post">
+
+                    
+                      <!-- <form action="/addtocart" method="post">
                         <input type="hidden" name="productId" value="<%= product._id %>">
                         <button type="submit" class=" btn btn-primary shadow-0 me-1">Add to Cart <i class="fa-solid fa-cart-shopping"></i></button>
+                      </form> -->
+
+                      <form action="/addtocart" method="post" <% if (product.quantity <= 0) { %>disabled<% } %>>
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                        <button type="submit" class=" btn btn-primary shadow-1 me-1" <% if (product.quantity <= 0) { %>disabled<% } %>>Add to Cart <i class="fa-solid fa-cart-shopping"></i></button>
                       </form>
 
 

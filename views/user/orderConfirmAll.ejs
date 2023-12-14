@@ -171,6 +171,7 @@
                       <button class="btn btn-light border" id="applyCouponButton" type="submit">Apply</button>
                     </div>
                   </div>
+
                   <div class="form-group">
                     <label class="form-label">Available Coupons:</label>
                     <select class="form-select" id="availableCoupons">
@@ -182,6 +183,7 @@
                         <% }); %>
                     </select>
                   </div>
+
                 </form>
 
 
@@ -426,6 +428,65 @@
     });
   </script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Update coupon input when selecting from the dropdown
+      $('#availableCoupons').on('change', function () {
+        const selectedCouponName = $('#availableCoupons option:selected').text().trim();
+        $('#couponCodeInput').val(selectedCouponName);
+      });
+  
+      // Apply or remove coupon logic
+      $('#applyCouponButton').on('click', function (event) {
+        event.preventDefault();
+  
+        const couponCode = $('#couponCodeInput').val();
+        const totalPrice = parseFloat($('#totalPrice').text());
+        const button = $(this);
+  
+        // Check if the button text is "Apply" or "Remove"
+        if (button.text() === "Apply") {
+          // Apply coupon logic here
+  
+          $.ajax({
+            type: 'POST',
+            url: '/applyCoupon',
+            data: { couponCode: couponCode, totalPrice: totalPrice },
+            success: function (data) {
+              $('#grantTotal').text(data.grantTotal);
+              $('#couponDiscount').text(data.couponDiscount);
+              // Change button text to "Remove" after applying the coupon
+              button.text("Remove");
+            },
+            error: function (xhr) {
+              const errorMessage = xhr.responseJSON.error;
+              if (errorMessage) {
+                alert("Insufficient purchase amount to claim this Coupon!!!");
+              } else {
+                alert('An error occurred while applying the coupon.');
+              }
+            }
+          });
+        } else if (button.text() === "Remove") {
+   
+          $.ajax({
+            type: 'POST',
+            url: '/removeCoupon',
+            data: { totalPrice: totalPrice },
+            success: function (data) {
+              $('#grantTotal').text(data.grantTotal);
+              $('#couponDiscount').text(data.couponDiscount);
+               button.text("Apply");
+             },
+            error: function (xhr) {
+              alert('An error occurred while removing the coupon.');
+            }
+          });
+        }
+      });
+    });
+  </script>
  
  
   <!-- Footer -->

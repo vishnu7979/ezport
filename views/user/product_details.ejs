@@ -49,11 +49,27 @@
 
 <div class="mb-3">
             <span class="h5 text text-danger">&#8377; <%= product.price %></span>
+            <del class=""><%= product.realPrice %></del>
+
             <span class="text-muted text-dark">/per item</span>
           </div>
 
           <p>
            <%= product.description %>
+          </p>
+
+          <p>
+            <% if (product.quantity <= 0) { %>
+              <span style="color: red;">Product Out of Stock</span>
+            <% } else if (product.quantity <= 5) { %>
+              <% if (product.quantity === 1) { %>
+                <span style="color: red;">Only one more left</span>
+              <% } else { %>
+                <span style="color: red;">Only <%= product.quantity %> more left</span>
+              <% } %>
+            <% } else { %>
+             
+            <% } %>
           </p>
           <hr />
 
@@ -67,9 +83,13 @@
           
          <div style="display: flex; justify-content: space-evenly;">
 
-          <form action="/addtocart" method="post">
+          <!-- <form action="/addtocart" method="post">
             <input type="hidden" name="productId" value="<%= product._id %>">
             <button type="submit" class="btn btn-primary shadow-0">Add to Cart <i class="me-1 fa fa-shopping-basket"></i></button>
+          </form> -->
+          <form action="/addtocart" method="post" <% if (product.quantity <= 0) { %>disabled<% } %>>
+            <input type="hidden" name="productId" value="<%= product._id %>">
+            <button type="submit" class=" btn btn-primary shadow-1 me-1" <% if (product.quantity <= 0) { %>disabled<% } %>>Add to Cart <i class="fa-solid fa-cart-shopping"></i></button>
           </form>
           <!-- <a href="#" style="height: 37px;" class="btn btn-success  border border-secondary py-2"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a> -->
         </div>

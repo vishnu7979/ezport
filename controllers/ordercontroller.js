@@ -258,7 +258,12 @@ const showOrderConfirmationAll = async (req, res) => {
       const address = await Address.find({ userId: user._id });
       const totalPrice = req.session.totalPrice;
       const grandTotal=totalPrice;
-      const coupons = await coupon.find({ appliedUsers: { $nin: [user._id] } });
+      // const coupons = await coupon.find({ appliedUsers: { $nin: [user._id] } });
+      const currentDate = new Date();
+      const coupons = await coupon.find({
+        appliedUsers: { $nin: [user._id] },
+        expiryDate: { $gte: currentDate.toISOString() }
+      });
   
       // Check if cartItems is empty
       if (cartItems.length === 0) {

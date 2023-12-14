@@ -160,13 +160,21 @@
               <a href="#" class="nav-link"><%= product.name %></a>
               <div class="price-wrap mb-2">
                 <strong class=""><%= product.price %></strong>
-                <del class=""><%= product.price %></del>
+                <del class=""><%= product.realPrice %></del>
+                <% if (product.quantity <= 0) { %>
+                  <div class="quantity-info text-danger">Out of Stock</div>
+                <% } %>
               </div>
               <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                <form action="/addtocart" method="post">
+                <!-- <form action="/addtocart" method="post">
                   <input type="hidden" name="productId" value="<%= product._id %>">
                   <button type="submit" class="btn btn-primary shadow-0">Add to Cart <i class="me-1 fa fa-shopping-basket"></i></button>
+                </form> -->
+                <form action="/addtocart" method="post" <% if (product.quantity <= 0) { %>disabled<% } %>>
+                  <input type="hidden" name="productId" value="<%= product._id %>">
+                  <button type="submit" class=" btn btn-primary shadow-1 me-1" <% if (product.quantity <= 0) { %>disabled<% } %>>Add to Cart <i class="fa-solid fa-cart-shopping"></i></button>
                 </form>
+
                 </div>
             </div>
           </div>
@@ -177,61 +185,7 @@
     </div>
   </section>
   <!-- Recommended -->
-
-  <!-- <script>
-    $(document).ready(function() {
-      $(".increaseQuantity").on("click", function() {
-        const itemInput = $(this).closest(".input-group").find(".form-control");
-        const currentQuantity = parseInt(itemInput.val());
-        const newQuantity = currentQuantity + 1;
-        updateQuantity(itemInput, newQuantity);
-      });
-    
-      $(".decreaseQuantity").on("click", function() {
-        const itemInput = $(this).closest(".input-group").find(".form-control");
-        const currentQuantity = parseInt(itemInput.val());
-    
-        // Check if the current quantity is greater than 1 before decreasing
-        if (currentQuantity > 1) {
-          const newQuantity = currentQuantity - 1;
-          updateQuantity(itemInput, newQuantity);
-        }
-      });
-    
-      function updateQuantity(itemInput, newQuantity) {
-        const currentQuantity = parseInt(itemInput.val());
-        const itemId = itemInput.data("item-id");
-    
-        $.ajax({
-          type: "POST",
-          url:"/cart/update/" + itemId,
-          data: { quantity: newQuantity },
-          success: function(response) {
-            if (response.success) {
-              itemInput.val(response.newQuantity);
-              
-              console.log("outof stock message",response.message);
-               const totalPriceElement = $("#totalPriceValue");
-              totalPriceElement.text("$" + response.newTotalPrice.toFixed(2));  
-        
-              const totalPriceElement2 = $("#totalPriceValue2");  
-              totalPriceElement2.text("$" + response.newTotalPrice.toFixed(2));  
-            } else {
-              // should Handle error after review 
-            }
-          },
-          error: function(err) 
-          {
-
-            if(err.status===400){
-              alert("Product Out Of Quantity !!!")
-            }
-          }
-        });
-      }
-    });
-    </script> -->
-
+ 
     <script>
       $(document).ready(function() {
         $(".increaseQuantity").on("click", function() {

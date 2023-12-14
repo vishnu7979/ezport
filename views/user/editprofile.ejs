@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+      
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0d9d9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4ca8af;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+        .error-container {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+
+   
+</head>
+<body>
+
+   
+
+    <div class="container">
+        <div class="error-container" id="errorContainer"></div>
+        <h1>Edit Profile</h1>
+        <form id="editProfileForm" action="/editProfile/<%=user._id%>" onsubmit="return validateForm()" method="post" novalidate>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="<%=user.name%>" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="<%=user.email%>" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+
+
+    <script>
+        function validateForm() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+
+            // Simple validation - check if name and email are not empty
+            if (name.trim() === '' || email.trim() === '') {
+                showError('Please enter both name and email.');
+                return false;
+            }
+
+            // Proper email validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address.');
+                return false;
+            }
+
+            // You can add more complex validation logic here if needed
+
+            return true;
+        }
+
+        function showError(message) {
+            var errorContainer = document.getElementById('errorContainer');
+            errorContainer.textContent = message;
+        }
+    </script>
+
+</body>
+</html>
